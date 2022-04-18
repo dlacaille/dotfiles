@@ -27,13 +27,6 @@ lvim.keys.normal_mode[",o"] = "A,<esc>o"
 lvim.keys.normal_mode[";;"] = "A;<esc>"
 lvim.keys.normal_mode[";o"] = "A;<esc>o"
 
--- Homerow navigation
--- Commented to force myself to use lightspeed instead
--- lvim.keys.normal_mode["<C-h>"] = "^"
--- lvim.keys.normal_mode["<C-l>"] = "$"
--- lvim.keys.normal_mode["<C-j>"] = "jjjj"
--- lvim.keys.normal_mode["<C-k>"] = "kkkk"
-
 -- Natural editing in insert mode
 lvim.keys.insert_mode["<M-bs>"] = {"<cmd>:norm db<cr>", {silent = true}}
 lvim.keys.insert_mode["<M-del>"] = {"<cmd>:norm dw<cr>", {silent = true}}
@@ -48,6 +41,11 @@ lvim.builtin.terminal.shade_terminals = false
 -- Git mappings
 lvim.builtin.which_key.mappings["g"]["h"] = {
     "<cmd>:DiffviewFileHistory<cr>", "File History"
+}
+
+-- Symbols outline
+lvim.builtin.which_key.mappings["o"] = {
+    "<cmd>:SymbolsOutline<cr>", "Symbols Outline"
 }
 
 -- Activate some default plugins
@@ -106,7 +104,7 @@ formatters.setup {
     {
         exe = "phpcsfixer",
         args = {"--config", "/Users/swoo/.swoo-workspace/.php-cs-fixer.php"}
-    }, {exe = "prettierd"}, {exe = "lua-format"}
+    }, {command = "prettierd"}, {exe = "lua-format"}
 }
 
 -- Set additional linters
@@ -147,6 +145,9 @@ use {"pwntester/octo.nvim", config = function() require"octo".setup() end}
 
 -- Shows diff view in a tab
 use {"sindrets/diffview.nvim"}
+
+-- Symbols outline for code
+use {"simrat39/symbols-outline.nvim"}
 
 -- Highlight colors
 use {
