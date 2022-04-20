@@ -1,4 +1,5 @@
 hub
+node_modules
 configstore
 valet
 git

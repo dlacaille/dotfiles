@@ -1,12 +1,15 @@
 local wezterm = require 'wezterm';
 return {
+    color_scheme = "tokyonight-night",
     font = wezterm.font("MonoLisa", {font_size = 13}),
     line_height = 1.6,
     use_fancy_tab_bar = false,
     tab_max_width = 48,
-    window_frame = {
-        active_titlebar_bg = "#0a0b0d",
-        inactive_titlebar_bg = "#0a0b0d"
+    disable_default_mouse_bindings = true,
+    term = "wezterm",
+    set_environment_variables = {
+        TERMINFO_DIRS = os.getenv("HOME") .. '/.config/.terminfo',
+        WSLENV = 'TERMINFO_DIRS'
     },
     keys = {
         {
@@ -61,29 +64,28 @@ return {
     },
     window_padding = {left = 0, right = 0, top = 0, bottom = 0},
     colors = {
-        foreground = "#d4d4d4",
-        background = "#131419",
-        cursor_bg = "#d16cfe",
-        cursor_fg = "#000",
-        cursor_border = "#d16cfe",
+        -- cursor_bg = "#d16cfe",
+        -- cursor_fg = "#000",
+        -- cursor_border = "#d16cfe",
         tab_bar = {
-            background = "#0a0b0d",
-            new_tab = {bg_color = "#0a0b0d", fg_color = "#d4d4d4"},
+            background = "#0e0e14",
+            new_tab = {bg_color = "#16161e", fg_color = "#c0caf5"},
             active_tab = {
-                bg_color = "#1f2025",
-                fg_color = "#d4d4d4",
+                bg_color = "#1a1b26",
+                fg_color = "#c0caf5",
                 intensity = "Bold"
             },
-            inactive_tab = {bg_color = "#0a0b0d", fg_color = "#d4d4d4"},
-            inactive_tab_edge = "#2b2b30"
-        },
-        ansi = {
-            "#191e2a", "#ed8274", "#a6cc70", "#fad07b", "#6dcbfa", "#cfbafa",
-            "#90e1c6", "#c7c7c7"
-        },
-        brights = {
-            "#191e2a", "#ed8274", "#a6cc70", "#fad07b", "#6dcbfa", "#cfbafa",
-            "#90e1c6", "#c7c7c7"
+            inactive_tab_hover = {
+                bg_color = "#1a1b26",
+                fg_color = "#c0caf5",
+                italic = true
+            },
+            new_tab_hover = {
+                bg_color = "#1a1b26",
+                fg_color = "#c0caf5",
+                italic = true
+            },
+            inactive_tab = {bg_color = "#13141c", fg_color = "#c0caf5"}
         }
     }
 }

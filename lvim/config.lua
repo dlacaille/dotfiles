@@ -1,7 +1,8 @@
 -- General
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "onedarkpro"
+lvim.colorscheme = "tokyonight"
+vim.g.tokyonight_style = "night"
 vim.opt.background = "dark"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.shiftwidth = 4 -- The number of spaces inserted for each indentation
@@ -53,6 +54,7 @@ lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
+lvim.builtin.gitsigns.active = false
 
 -- Configure greeter
 lvim.builtin.alpha.dashboard.section.header.val = {
@@ -113,7 +115,7 @@ linters.setup {{exe = "eslint_d"}}
 
 -- Additional Plugins
 lvim.plugins = {}
-function use(plugin) table.insert(lvim.plugins, plugin) end
+local function use(plugin) table.insert(lvim.plugins, plugin) end
 
 -- Colorschemes
 use {"lunarvim/colorschemes"}
@@ -121,17 +123,56 @@ use {"folke/tokyonight.nvim"}
 use {"olimorris/onedarkpro.nvim"}
 use {"luxed/ayu-vim"}
 
--- Configure theme
-local onedarkpro = require("onedarkpro")
-onedarkpro.setup({
-    colors = {bg = "#131419"}, -- Override default colors by specifying colors for 'onelight' or 'onedark' themes
-    options = {
-        undercurl = true, -- Use the themes opinionated undercurl styles?
-        cursorline = true -- Use cursorline highlighting?
-    },
-    styles = {comments = "italic", keywords = "italic"}
-})
-onedarkpro.load()
+-- Configure autopairs for nvim-cmp
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+local cmp = require('cmp')
+cmp.event:on('confirm_done',
+             cmp_autopairs.on_confirm_done({map_char = {tex = ''}}))
+
+-- Customize the completion menu
+lvim.builtin.cmp.formatting.fields = {"menu", "abbr", "kind"}
+lvim.builtin.cmp.formatting.format = function(entry, vim_item)
+    local max_width = lvim.builtin.cmp.formatting.max_width
+    if max_width ~= 0 and #vim_item.abbr > max_width then
+        vim_item.abbr = string.sub(vim_item.abbr, 1, max_width - 1) .. "…"
+    end
+    vim_item.kind = lvim.builtin.cmp.formatting.kind_icons[vim_item.kind] ..
+                        vim_item.kind
+    vim_item.menu = lvim.builtin.cmp.formatting.source_names[entry.source.name]
+    vim_item.dup = lvim.builtin.cmp.formatting.duplicates[entry.source.name] or
+                       lvim.builtin.cmp.formatting.duplicates_default
+    return vim_item
+end
+
+-- Show method signature while typing
+use {
+    "ray-x/lsp_signature.nvim",
+    config = function()
+        local cfg = {}
+        require"lsp_signature".setup(cfg)
+    end
+}
+
+-- Setup treesitter text objects
+use {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    config = function()
+        lvim.builtin.treesitter.textobjects.select = {
+            enable = true,
+
+            -- Automatically jump forward to textobj, similar to targets.vim
+            lookahead = true,
+
+            keymaps = {
+                -- You can use the capture groups defined in textobjects.scm
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+                ["ac"] = "@class.outer",
+                ["ic"] = "@class.inner"
+            }
+        }
+    end
+}
 
 -- Fixes the syntax for scss files
 use {"cakebaker/scss-syntax.vim"}
@@ -142,6 +183,20 @@ use {"jeffkreeftmeijer/vim-numbertoggle"}
 
 -- 🐙 Octo
 use {"pwntester/octo.nvim", config = function() require"octo".setup() end}
+
+-- Delete buffers without losing the window
+use {"famiu/bufdelete.nvim"}
+
+-- Snap fuzzy finder
+use {
+    "camspiers/snap",
+    config = function()
+        local snap = require 'snap'
+        snap.maps {
+            {"<Leader><Leader>", snap.config.file {producer = "ripgrep.file"}}
+        }
+    end
+}
 
 -- Shows diff view in a tab
 use {"sindrets/diffview.nvim"}
@@ -198,7 +253,7 @@ use {
     end
 }
 
--- Let's fly
+-- ✈️
 use {"ggandor/lightspeed.nvim", event = "BufRead"}
 
 -- Smooth sailing
@@ -239,12 +294,10 @@ use {
 use {
     "p00f/nvim-ts-rainbow",
     config = function()
-        require("nvim-treesitter.configs").setup {
-            rainbow = {
-                enable = true,
-                extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-                max_file_lines = nil -- Do not enable for files with more than n lines, int
-            }
+        lvim.builtin.treesitter.rainbow = {
+            enable = true,
+            extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+            max_file_lines = nil -- Do not enable for files with more than n lines, int
         }
     end
 }
