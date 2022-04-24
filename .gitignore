@@ -3,4 +3,5 @@ node_modules
 configstore
 valet
 git
+sessions
 gh
