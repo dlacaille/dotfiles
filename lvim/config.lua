@@ -28,7 +28,11 @@ lvim.keys.normal_mode[",o"] = "A,<esc>o"
 lvim.keys.normal_mode[";;"] = "A;<esc>"
 lvim.keys.normal_mode[";o"] = "A;<esc>o"
 
+-- French keyboard
+lvim.keys.normal_mode["é"] = "^"
+
 -- Natural editing in insert mode
+lvim.keys.insert_mode["<home>"] = {"<cmd>:norm ^<cr>", {silent = true}}
 lvim.keys.insert_mode["<M-bs>"] = {"<cmd>:norm db<cr>", {silent = true}}
 lvim.keys.insert_mode["<M-del>"] = {"<cmd>:norm dw<cr>", {silent = true}}
 lvim.keys.insert_mode["<M-left>"] = {"<cmd>:norm bi<cr>", {silent = true}}
@@ -38,15 +42,28 @@ lvim.keys.insert_mode["<M-right>"] = {"<cmd>:norm w<cr>", {silent = true}}
 lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.terminal.size = 15
 lvim.builtin.terminal.shade_terminals = false
+-- lvim.keys.term_mode["<esc>"] = "<C-\\><C-N>"
+
+-- Scroll term to bottom to make it follow output properly.
+vim.cmd("autocmd BufRead term://* call feedkeys(\"\\<C-\\>\\<C-N>Gi\")")
 
 -- Git mappings
 lvim.builtin.which_key.mappings["g"]["h"] = {
     "<cmd>:DiffviewFileHistory<cr>", "File History"
 }
 
+-- Shortcuts
+lvim.builtin.which_key.mappings["W"] = {"<cmd>:wa<cr>", "Save All"}
+
 -- Symbols outline
 lvim.builtin.which_key.mappings["o"] = {
     "<cmd>:SymbolsOutline<cr>", "Symbols Outline"
+}
+
+-- BufferLine
+lvim.builtin.which_key.mappings["b"]["o"] = {
+    "<cmd>:BufferLineCloseLeft<cr><cmd>:BufferLineCloseRight<cr>",
+    "Close all but current"
 }
 
 -- Activate some default plugins
@@ -54,7 +71,6 @@ lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
-lvim.builtin.gitsigns.active = false
 
 -- Configure greeter
 lvim.builtin.alpha.dashboard.section.header.val = {
@@ -90,12 +106,12 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
     "bash", "c", "javascript", "json", "lua", "python", "typescript", "tsx",
-    "css", "scss", "rust", "java", "yaml", "vue", "php"
+    "css", "scss", "rust", "java", "yaml", "vue", "php", "fish"
 }
 
 -- Configure Treesitter
 lvim.builtin.treesitter.highlight.enabled = true
-lvim.builtin.treesitter.indent.enable = false
+lvim.builtin.treesitter.indent.disable = {"php"}
 
 -- Display git blame for the current line
 lvim.builtin.gitsigns.opts.current_line_blame = true
@@ -120,8 +136,6 @@ local function use(plugin) table.insert(lvim.plugins, plugin) end
 -- Colorschemes
 use {"lunarvim/colorschemes"}
 use {"folke/tokyonight.nvim"}
-use {"olimorris/onedarkpro.nvim"}
-use {"luxed/ayu-vim"}
 
 -- Configure autopairs for nvim-cmp
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
@@ -143,6 +157,23 @@ lvim.builtin.cmp.formatting.format = function(entry, vim_item)
                        lvim.builtin.cmp.formatting.duplicates_default
     return vim_item
 end
+
+-- Highlight word under cursor
+use {
+    "itchyny/vim-cursorword",
+    event = {"BufEnter", "BufNewFile"},
+    config = function()
+        vim.api.nvim_command("augroup user_plugin_cursorword")
+        vim.api.nvim_command("autocmd!")
+        vim.api.nvim_command(
+            "autocmd FileType NvimTree,lspsagafinder,dashboard,vista let b:cursorword = 0")
+        vim.api.nvim_command(
+            "autocmd WinEnter * if &diff || &pvw | let b:cursorword = 0 | endif")
+        vim.api.nvim_command("autocmd InsertEnter * let b:cursorword = 0")
+        vim.api.nvim_command("autocmd InsertLeave * let b:cursorword = 1")
+        vim.api.nvim_command("augroup END")
+    end
+}
 
 -- Show method signature while typing
 use {
@@ -174,29 +205,42 @@ use {
     end
 }
 
+-- ⏰
+use({"wakatime/vim-wakatime"})
+
+-- Automated session management
+use({
+    "folke/persistence.nvim",
+    event = "BufReadPre", -- this will only start session saving when an actual file was opened
+    module = "persistence",
+    config = function() require("persistence").setup() end
+})
+lvim.builtin.which_key.mappings["S"] = {
+    name = "Session",
+    c = {
+        "<cmd>lua require('persistence').load()<cr>",
+        "Restore last session for current dir"
+    },
+    l = {
+        "<cmd>lua require('persistence').load({ last = true })<cr>",
+        "Restore last session"
+    },
+    Q = {
+        "<cmd>lua require('persistence').stop()<cr>",
+        "Quit without saving session"
+    }
+}
+
 -- Fixes the syntax for scss files
 use {"cakebaker/scss-syntax.vim"}
 
 -- Necessities
 use {"tpope/vim-surround"}
+use {"tpope/vim-repeat"}
 use {"jeffkreeftmeijer/vim-numbertoggle"}
 
 -- 🐙 Octo
 use {"pwntester/octo.nvim", config = function() require"octo".setup() end}
-
--- Delete buffers without losing the window
-use {"famiu/bufdelete.nvim"}
-
--- Snap fuzzy finder
-use {
-    "camspiers/snap",
-    config = function()
-        local snap = require 'snap'
-        snap.maps {
-            {"<Leader><Leader>", snap.config.file {producer = "ripgrep.file"}}
-        }
-    end
-}
 
 -- Shows diff view in a tab
 use {"sindrets/diffview.nvim"}
@@ -210,7 +254,7 @@ use {
     config = function()
         require("colorizer").setup({
             "css", "scss", "javascript", "typescript", "vue", "php", "html",
-            "lua", "vim"
+            "lua", "vim", "toml"
         }, {
             RGB = true, -- #RGB hex codes
             RRGGBB = true, -- #RRGGBB hex codes
