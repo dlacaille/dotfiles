@@ -10,4 +10,6 @@ set -x PATH $PATH $ANDROID_HOME/platform-tools
 set -x PATH $PATH $ANDROID_HOME/tools
 set -x PATH $PATH $ANDROID_HOME/tools/bin
 set -x PATH $PATH $ANDROID_HOME/emulator
+set -x TERMINFO_DIRS ~/.config/.terminfo
+set -x WSLENV TERMINFO_DIRS
 set -x PRETTIERD_DEFAULT_CONFIG /Users/swoo/.config/.prettierrc

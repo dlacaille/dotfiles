@@ -88,10 +88,6 @@ return {
     initial_cols = 120,
     initial_rows = 40,
     window_decorations = "RESIZE",
-    set_environment_variables = {
-        TERMINFO_DIRS = os.getenv("HOME") .. '/.config/.terminfo',
-        WSLENV = 'TERMINFO_DIRS'
-    },
     keys = {
         {
             key = "v",
