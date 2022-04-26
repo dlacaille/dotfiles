@@ -1,5 +1,3 @@
--- General
-lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "tokyonight"
 vim.g.tokyonight_style = "night"
@@ -12,6 +10,18 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevelstart = 20
 vim.cmd("set diffopt+=hiddenoff,iwhiteall,algorithm:patience")
+
+-- Make sure the file is reloaded if it was change outside of vim.
+vim.cmd("au CursorHold,CursorHoldI * checktime")
+vim.cmd("au FocusGained,BufEnter * :checktime")
+
+-- Fix first resize of tmux
+vim.api.nvim_create_autocmd({"VimEnter"}, {
+    callback = function()
+        local pid, WINCH = vim.fn.getpid(), vim.loop.constants.SIGWINCH
+        vim.defer_fn(function() vim.loop.kill(pid, WINCH) end, 20)
+    end
+})
 
 -- Hide ^M on mixed unix/dos line ending files
 vim.cmd "match Ignore /\r$/"
@@ -175,6 +185,13 @@ use {
     end
 }
 
+-- Live grep raw
+use {'nvim-telescope/telescope-live-grep-raw.nvim'}
+lvim.builtin.which_key.mappings['s']['g'] = {
+    "<cmd>lua require(\"telescope\").extensions.live_grep_raw.live_grep_raw()<cr>",
+    "Live grep raw"
+}
+
 -- Show method signature while typing
 use {
     "ray-x/lsp_signature.nvim",
@@ -238,6 +255,13 @@ use {"cakebaker/scss-syntax.vim"}
 use {"tpope/vim-surround"}
 use {"tpope/vim-repeat"}
 use {"jeffkreeftmeijer/vim-numbertoggle"}
+
+-- Tmux integration
+use {"nathom/tmux.nvim"}
+lvim.keys.normal_mode["<C-h>"] = "<cmd>lua require('tmux').move_left()<cr>"
+lvim.keys.normal_mode["<C-l>"] = "<cmd>lua require('tmux').move_right()<cr>"
+lvim.keys.normal_mode["<C-k>"] = "<cmd>lua require('tmux').move_up()<cr>"
+lvim.keys.normal_mode["<C-j>"] = "<cmd>lua require('tmux').move_down()<cr>"
 
 -- 🐙 Octo
 use {"pwntester/octo.nvim", config = function() require"octo".setup() end}

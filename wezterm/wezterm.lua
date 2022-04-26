@@ -88,57 +88,6 @@ return {
     initial_cols = 120,
     initial_rows = 40,
     window_decorations = "RESIZE",
-    keys = {
-        {
-            key = "v",
-            mods = "SHIFT|CMD",
-            action = wezterm.action {
-                SplitVertical = {domain = "CurrentPaneDomain"}
-            }
-        }, {
-            key = "h",
-            mods = "SHIFT|CMD",
-            action = wezterm.action {
-                SplitHorizontal = {domain = "CurrentPaneDomain"}
-            }
-        }, {
-            key = "x",
-            mods = "SHIFT|CMD",
-            action = wezterm.action {CloseCurrentPane = {confirm = true}}
-        }, {key = "z", mods = "CMD", action = "TogglePaneZoomState"}, {
-            key = "l",
-            mods = "CMD",
-            action = wezterm.action {ActivatePaneDirection = "Right"}
-        }, {
-            key = "h",
-            mods = "CMD",
-            action = wezterm.action {ActivatePaneDirection = "Left"}
-        }, {
-            key = "j",
-            mods = "CMD",
-            action = wezterm.action {ActivatePaneDirection = "Down"}
-        }, {
-            key = "k",
-            mods = "CMD",
-            action = wezterm.action {ActivatePaneDirection = "Up"}
-        }, {
-            key = "RightArrow",
-            mods = "SHIFT|CMD",
-            action = wezterm.action {AdjustPaneSize = {"Right", 1}}
-        }, {
-            key = "LeftArrow",
-            mods = "SHIFT|CMD",
-            action = wezterm.action {AdjustPaneSize = {"Left", 1}}
-        }, {
-            key = "DownArrow",
-            mods = "SHIFT|CMD",
-            action = wezterm.action {AdjustPaneSize = {"Down", 1}}
-        }, {
-            key = "UpArrow",
-            mods = "SHIFT|CMD",
-            action = wezterm.action {AdjustPaneSize = {"Up", 1}}
-        }
-    },
     window_padding = {left = 0, right = 0, top = 0, bottom = 0},
     colors = {
         -- cursor_bg = "#d16cfe",
