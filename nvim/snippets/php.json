@@ -1,0 +1,7 @@
+{
+    "pe": {
+        "prefix": "<?",
+        "body": ["<?php echo ${0:var}; ?>"],
+        "description": "PHP inline tag with echo"
+    }
+}
