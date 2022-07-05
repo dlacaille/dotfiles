@@ -1,7 +1,9 @@
 hub
+spicetify
 node_modules
 configstore
 valet
 git
 sessions
+tmuxinator
 gh
