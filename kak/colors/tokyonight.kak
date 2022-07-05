@@ -1,0 +1,1 @@
+/Users/swoo/.config/kak/plugins/tokyonight.kak
