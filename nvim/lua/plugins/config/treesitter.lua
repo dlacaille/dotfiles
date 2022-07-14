@@ -1,5 +1,7 @@
 local colors = require 'colors'
 
+require('orgmode').setup_ts_grammar()
+
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
         'bash',
@@ -10,6 +12,7 @@ require('nvim-treesitter.configs').setup {
         'python',
         'typescript',
         'tsx',
+        'org',
         'css',
         'scss',
         'rust',
@@ -52,8 +55,6 @@ require('nvim-treesitter.configs').setup {
                 -- You can use the capture groups defined in textobjects.scm
                 ['af'] = '@function.outer',
                 ['if'] = '@function.inner',
-                ['ac'] = '@class.outer',
-                ['ic'] = '@class.inner',
             },
         },
     },

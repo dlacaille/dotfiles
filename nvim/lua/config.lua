@@ -3,10 +3,6 @@ vim.g.python3_host_prog = '/usr/local/bin/python3'
 vim.g.tpipeline_cursormoved = true
 vim.g.cursorhold_updatetime = 100
 
--- https://gpanders.com/blog/whats-new-in-neovim-0-7/
-vim.g.did_load_filetypes = 0
-vim.g.do_filetype_lua = 1
-
 -- Hexokinase settings
 vim.g.Hexokinase_highlighters = { 'backgroundfull' }
 vim.g.Hexokinase_optInPatterns = { 'full_hex', 'triple_hex', 'rgb', 'rgba', 'hsl', 'hsla' }

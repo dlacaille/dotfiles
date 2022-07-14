@@ -1,9 +1,16 @@
 local whichkey = require 'which-key'
 
 local conf = {
+    plugins = {
+        spelling = {
+            enabled = true,
+        },
+    },
     window = {
-        border = 'single', -- none, single, double, shadow
+        border = 'none', -- none, single, double, shadow
         position = 'bottom', -- bottom, top
+        margin = { 1, 1, 0, 1 },
+        winblend = 25,
     },
 }
 
@@ -18,10 +25,13 @@ local mappings = {
         ['é'] = { "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>", 'Comment' },
 
         -- Explorer
-        e = { '<cmd>NvimTreeToggle<cr>', 'Explorer' },
+        e = { '<cmd>Neotree reveal<cr>', 'Explorer' },
 
         -- Symbols
         s = { '<cmd>SymbolsOutline<cr>', 'Symbols' },
+
+        -- Org mode
+        o = 'Org mode',
 
         -- Buffers
         c = { '<cmd>%bd|e#|bd#<cr>', 'Close all but current' },
@@ -45,7 +55,6 @@ local mappings = {
         -- LSP
         l = {
             name = 'LSP',
-            a = { '<cmd>CodeActionMenu<cr>', 'Code Actions' },
             d = { vim.lsp.buf.type_definition, 'Type definition' },
             e = { vim.diagnostic.open_float, 'Diagnostics' },
             q = { vim.diagnostic.setloclist, 'Quickfix' },

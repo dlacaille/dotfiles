@@ -45,7 +45,7 @@ M.components = {
     lsp = {
         function()
             -- ID will be used for caching
-            local id = vim.bo.filetype
+            local id = vim.api.nvim_get_current_buf()
 
             if lsp_cache[id] then
                 return lsp_cache[id]
@@ -60,7 +60,7 @@ M.components = {
             local buf_client_names = {}
 
             for _, client in pairs(buf_clients) do
-                if client.name ~= 'null-ls' then
+                if client.name ~= 'null-ls' and client.attached_buffers[id] then
                     table.insert(buf_client_names, client.name)
                 end
             end
@@ -74,8 +74,11 @@ M.components = {
                 end
             end
 
-            local component = ' ' .. table.concat(buf_client_names, ', ')
+            local sourcestr = table.concat(buf_client_names, ', ')
+            local component = sourcestr ~= '' and ' ' .. sourcestr or ''
+
             lsp_cache[id] = component
+
             return component
         end,
         color = { gui = 'bold' },
@@ -102,32 +105,33 @@ M.components = {
 
 M.themes = {}
 
+local linebg = colors.bg
 M.themes.tokyonight_custom = {
     normal = {
         a = { bg = colors.blue, fg = colors.black },
-        b = { bg = colors.bg, fg = colors.blue },
-        c = { bg = colors.bg, fg = colors.comment },
+        b = { bg = linebg, fg = colors.blue },
+        c = { bg = linebg, fg = colors.comment },
     },
     insert = {
         a = { bg = colors.green, fg = colors.black },
-        b = { bg = colors.bg, fg = colors.green },
+        b = { bg = linebg, fg = colors.green },
     },
     command = {
         a = { bg = colors.yellow, fg = colors.black },
-        b = { bg = colors.bg, fg = colors.yellow },
+        b = { bg = linebg, fg = colors.yellow },
     },
     visual = {
         a = { bg = colors.magenta, fg = colors.black },
-        b = { bg = colors.bg, fg = colors.magenta },
+        b = { bg = linebg, fg = colors.magenta },
     },
     replace = {
         a = { bg = colors.red, fg = colors.black },
-        b = { bg = colors.bg, fg = colors.red },
+        b = { bg = linebg, fg = colors.red },
     },
     inactive = {
-        a = { bg = colors.bg, fg = colors.blue },
-        b = { bg = colors.bg, fg = colors.fg_gutter, gui = 'bold' },
-        c = { bg = colors.bg, fg = colors.fg_gutter },
+        a = { bg = linebg, fg = colors.blue },
+        b = { bg = linebg, fg = colors.fg_gutter, gui = 'bold' },
+        c = { bg = linebg, fg = colors.fg_gutter },
     },
 }
 

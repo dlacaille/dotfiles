@@ -1,5 +1,6 @@
--- Disable some built-in nvim plugins
-local disabled_plugins = {
+local M = {}
+
+M.disabled_plugins = {
     'gzip',
     'zip',
     'zipPlugin',
@@ -23,6 +24,11 @@ local disabled_plugins = {
     'netrwFileHandlers',
 }
 
-for _, p in pairs(disabled_plugins) do
-    vim.g['loaded_' .. p] = true
+function M.setup()
+    for _, p in pairs(M.disabled_plugins) do
+        -- Disable some built-in nvim plugins
+        vim.g['loaded_' .. p] = true
+    end
 end
+
+return M

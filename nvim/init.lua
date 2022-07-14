@@ -1,9 +1,11 @@
 local _, impatient = pcall(require, 'impatient')
-require 'disabled'
+
 require 'config'
-require 'plugins'
-require 'keymaps'
-require 'autocmds'
-require 'theme'
-require 'highlights'
-require('title').setup()
+
+require('disabled').setup()
+require('plugins').setup()
+require('keymaps').setup()
+require('autocmds').setup()
+require('theme').setup()
+require('highlights').setup()
+require('lsp').setup()

@@ -35,14 +35,6 @@ require('fzf-lua').setup {
         ['header'] = { 'fg', 'Comment' },
         ['gutter'] = { 'bg', 'Normal' },
     },
-    on_create = function()
-        -- Close nvim-tree if fzf is open, or else the buffer will open beside nvim-tree
-        -- "Split windows and the project drawer go together like oil and vinegar" -Drew Neil
-        local view = require 'nvim-tree.view'
-        if view.is_visible() then
-            view.close()
-        end
-    end,
     previewers = {
         builtin = {
             extensions = {
