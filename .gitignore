@@ -8,8 +8,6 @@ shopify
 yarn
 sessions
 tmuxinator
-state.yml
 automatic_backups
-queue.sqlite3
 recentservers.xml
 gh
