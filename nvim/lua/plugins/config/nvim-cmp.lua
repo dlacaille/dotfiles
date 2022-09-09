@@ -6,6 +6,11 @@ end
 local luasnip = require 'luasnip'
 local cmp = require 'cmp'
 
+-- Setup cmp-npm (for package.json)
+require('cmp-npm').setup {
+    ignore_non_semantic_versions = true,
+}
+
 -- Icons
 local icons = {
     Text = ' ',
@@ -56,7 +61,7 @@ cmp.setup {
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<CR>'] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
+            select = false,
         },
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
@@ -80,7 +85,7 @@ cmp.setup {
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
-        { name = 'orgmode' },
+        { name = 'npm', keyword_length = 4 },
     }, {
         { name = 'buffer' },
     }),
@@ -88,10 +93,6 @@ cmp.setup {
 
 -- Load luasnip snippets.
 require('luasnip.loaders.from_vscode').lazy_load()
-
--- Setup autopairs
-local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
-cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done { map_char = { tex = '' } })
 
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {

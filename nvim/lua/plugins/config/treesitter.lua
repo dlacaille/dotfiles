@@ -1,34 +1,32 @@
 local colors = require 'colors'
 
-require('orgmode').setup_ts_grammar()
-
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
         'bash',
-        'c',
+        'comment',
+        'css',
+        'html',
+        'gitignore',
+        'java',
         'javascript',
+        'jsdoc',
         'json',
         'lua',
-        'python',
-        'typescript',
-        'tsx',
-        'org',
-        'css',
-        'scss',
-        'rust',
-        'java',
-        'yaml',
-        'vue',
         'php',
-        'html',
-        'fish',
+        'pug',
+        'scss',
+        'sql',
+        'tsx',
+        'typescript',
+        'vue',
+        'yaml',
     },
     sync_install = false,
 
     highlight = {
         enable = true,
         disable = { 'php', 'html' },
-        additional_vim_regex_highlighting = true,
+        additional_vim_regex_highlighting = { 'javascript' },
     },
 
     indent = {
@@ -41,6 +39,10 @@ require('nvim-treesitter.configs').setup {
     },
 
     autotag = {
+        enable = true,
+    },
+
+    endwise = {
         enable = true,
     },
 

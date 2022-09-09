@@ -20,7 +20,6 @@ function M.setup()
         use 'tpope/vim-surround'
         use 'tpope/vim-repeat'
         use 'tpope/vim-fugitive'
-        use 'tpope/vim-rsi'
 
         -- Multi cursors
         use 'mg979/vim-visual-multi'
@@ -35,11 +34,10 @@ function M.setup()
 
         -- Note taking
         use {
-            'nvim-orgmode/orgmode',
-            config = config_mod('orgmode', {
-                org_agenda_files = { '/Volumes/GoogleDrive/My Drive/orgs/**/*' },
-                org_default_notes_file = '/Volumes/GoogleDrive/My Drive/orgs/refile.org',
-            }),
+            'phaazon/mind.nvim',
+            branch = 'v2',
+            requires = { 'nvim-lua/plenary.nvim' },
+            config = config_req 'plugins.config.mind',
         }
 
         -- Monkey-patches
@@ -48,7 +46,7 @@ function M.setup()
 
         -- Look & Feel
         use 'folke/tokyonight.nvim'
-        use { 'stevearc/dressing.nvim', config = config_mod('dressing', {}) }
+        use { 'catppuccin/nvim', as = 'catppuccin' }
         use {
             'https://gitlab.com/yorickpeterse/nvim-pqf.git',
             config = config_mod('pqf', {
@@ -60,19 +58,16 @@ function M.setup()
                 },
             }),
         }
-        use 'vimpostor/vim-tpipeline'
         use {
             'nvim-lualine/lualine.nvim',
             requires = 'kyazdani42/nvim-web-devicons',
             config = config_mod 'plugins.config.lualine',
         }
+        -- use { 'RRethy/vim-hexokinase', run = 'make hexokinase' }
         use {
-            'rcarriga/nvim-notify',
-            config = function()
-                vim.notify = require 'notify'
-            end,
+            'mrshmllow/document-color.nvim',
+            config = config_mod('document-color', {}),
         }
-        use { 'RRethy/vim-hexokinase', run = 'make hexokinase' }
 
         -- Terminal
         use {
@@ -81,20 +76,22 @@ function M.setup()
         }
 
         -- Navigation
-        use 'thinca/vim-visualstar'
         use 'simrat39/symbols-outline.nvim'
-        use { 'max397574/better-escape.nvim', config = config_mod 'better_escape' }
-        use {
-            'kevinhwang91/nvim-ufo',
-            requires = 'kevinhwang91/promise-async',
-            config = config_mod 'ufo',
-        }
         use 'nathom/tmux.nvim'
         use { 'ethanholz/nvim-lastplace', config = config_mod('nvim-lastplace', {}) }
         use {
             'karb94/neoscroll.nvim',
             event = 'BufRead',
             config = config_req 'plugins.config.neoscroll',
+        }
+        use {
+            'petertriho/nvim-scrollbar',
+            config = config_mod 'scrollbar',
+        }
+        use {
+            'SmiteshP/nvim-navic',
+            requires = 'neovim/nvim-lspconfig',
+            config = config_req 'plugins.config.navic',
         }
         use {
             'nvim-neo-tree/neo-tree.nvim',
@@ -106,43 +103,22 @@ function M.setup()
             },
             config = config_req 'plugins.config.neotree',
         }
-        use {
-            'akinsho/bufferline.nvim',
-            tag = 'v2.*',
-            requires = 'kyazdani42/nvim-web-devicons',
-            config = config_req 'plugins.config.bufferline',
-        }
         use { 'folke/which-key.nvim', config = config_req 'plugins.config.which-key' }
         use {
             'ibhagwan/fzf-lua',
             requires = 'kyazdani42/nvim-web-devicons',
             config = config_req 'plugins.config.fzf',
         }
-        use {
-            'ghillb/cybu.nvim',
-            branch = 'v1.x',
-            requires = 'kyazdani42/nvim-web-devicons',
-            config = config_req 'plugins.config.cybu',
-        }
         use { 'chentoast/marks.nvim', config = config_mod('marks', {}) }
 
-        -- Markdown
-        use {
-            'iamcco/markdown-preview.nvim',
-            run = 'cd app && npm install',
-            setup = function()
-                vim.g.mkdp_filetypes = { 'markdown' }
-            end,
-            ft = { 'markdown' },
-        }
-
         -- Language
-        use 'RRethy/vim-illuminate'
         use 'cakebaker/scss-syntax.vim'
-        use 'MaxMEllon/vim-jsx-pretty'
-        use { 'j-hui/fidget.nvim', config = config_mod('fidget', { text = { spinner = 'dots_snake' } }) }
-        use { 'turbio/bracey.vim', run = 'npm install --prefix server' }
-        use { 'windwp/nvim-autopairs', config = config_mod('nvim-autopairs', {}) }
+        use 'jxnblk/vim-mdx-js'
+        use { 'iamcco/markdown-preview.nvim', run = 'cd app && npm i' }
+        use { 'gaoDean/autolist.nvim', config = config_mod('autolist', {}) }
+        use { 'napmn/react-extract.nvim', config = config_req 'plugins.config.react-extract' }
+        use { 'mfussenegger/nvim-dap', config = config_req 'plugins.config.dap' }
+        use { 'rcarriga/nvim-dap-ui', config = config_mod('dapui', {}) }
         use {
             'L3MON4D3/LuaSnip',
             config = config_mod('luasnip.loaders.from_vscode', { paths = { './snippets' } }, 'lazy_load'),
@@ -154,9 +130,16 @@ function M.setup()
                 'hrsh7th/cmp-buffer',
                 'hrsh7th/cmp-path',
                 'hrsh7th/cmp-cmdline',
+                'David-Kunz/cmp-npm',
                 'saadparwaiz1/cmp_luasnip',
             },
             config = config_req 'plugins.config.nvim-cmp',
+        }
+        use {
+            'windwp/nvim-autopairs',
+            config = config_mod('nvim-autopairs', {
+                enable_check_bracket_line = false,
+            }),
         }
         use {
             'neovim/nvim-lspconfig',
@@ -168,20 +151,14 @@ function M.setup()
                 'hrsh7th/nvim-cmp',
             },
         }
-        use { 'smjonas/inc-rename.nvim', config = config_mod 'inc_rename' }
         use 'rafamadriz/friendly-snippets'
-        use { 'lewis6991/spellsitter.nvim', config = config_mod 'spellsitter' }
-        use 'andymass/vim-matchup'
         use {
             'nvim-treesitter/nvim-treesitter',
             requires = {
                 'p00f/nvim-ts-rainbow',
                 'windwp/nvim-ts-autotag',
+                'RRethy/nvim-treesitter-endwise',
                 'nvim-treesitter/nvim-treesitter-textobjects',
-                {
-                    'nvim-treesitter/nvim-treesitter-context',
-                    config = config_mod('treesitter-context', {}),
-                },
             },
             run = ':TSUpdate',
             config = config_req 'plugins.config.treesitter',

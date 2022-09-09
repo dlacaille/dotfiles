@@ -18,8 +18,7 @@ wezterm.on("update-right-status", function(window, pane)
 end)
 
 return {
-	debug_key_events = true,
-	color_scheme = "tokyonight-night",
+	color_scheme = "Catppuccin Mocha",
 	font = wezterm.font({
 		family = "MonoLisa",
 		weight = "Regular",

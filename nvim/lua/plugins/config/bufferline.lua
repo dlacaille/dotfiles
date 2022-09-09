@@ -5,26 +5,6 @@ require('bufferline').setup {
         tab_size = 0,
         left_trunc_marker = '',
         right_trunc_marker = '',
-        diagnostics_indicator = function(count, level, diagnostics_dict, context)
-            if context.buffer:current() then
-                return ''
-            end
-
-            local signs = require('lsp').signs
-            local level_signs = {
-                error = signs.Error,
-                info = signs.Info,
-                hint = signs.Hint,
-                default = signs.Warn,
-            }
-
-            local s = ''
-            for l, n in pairs(diagnostics_dict) do
-                local i = level_signs[l] or level_signs.default
-                s = s .. ' ' .. i .. n
-            end
-            return s
-        end,
         middle_mouse_command = 'bdelete! %d',
         custom_filter = function(buf_number, buf_numbers)
             -- filter out filetypes you don't want to see

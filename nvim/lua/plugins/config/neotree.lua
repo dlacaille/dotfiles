@@ -6,6 +6,15 @@ require('neo-tree').setup {
     popup_border_style = 'rounded',
     enable_git_status = true,
     enable_diagnostics = true,
+    event_handlers = {
+        {
+            event = 'file_opened',
+            handler = function(file_path)
+                --auto close
+                require('neo-tree').close_all()
+            end,
+        },
+    },
     default_component_configs = {
         container = {
             enable_character_fade = true,
@@ -58,7 +67,7 @@ require('neo-tree').setup {
         },
     },
     window = {
-        position = 'current',
+        position = 'left',
         width = 40,
         mapping_options = {
             noremap = true,

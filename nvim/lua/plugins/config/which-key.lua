@@ -7,22 +7,27 @@ local conf = {
         },
     },
     window = {
-        border = 'none', -- none, single, double, shadow
+        border = 'single', -- none, single, double, shadow
         position = 'bottom', -- bottom, top
-        margin = { 1, 1, 0, 1 },
-        winblend = 25,
     },
 }
 
 local mappings = {
     visual_leader = {
-        ['é'] = { "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<cr>", 'Comment' },
+        ['é'] = { "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", 'Comment' },
+
+        -- React
+        r = {
+            name = 'React',
+            e = { require('react-extract').extract_to_new_file, 'Extract to new file' },
+            c = { require('react-extract').extract_to_current_file, 'Extract to component' },
+        },
     },
     normal_leader = {
         -- Basics
         w = { '<cmd>w!<cr>', 'Save' },
         q = { '<cmd>q!<cr>', 'Quit' },
-        ['é'] = { "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>", 'Comment' },
+        ['é'] = { require('Comment.api').toggle.linewise.current, 'Comment' },
 
         -- Explorer
         e = { '<cmd>Neotree reveal<cr>', 'Explorer' },
@@ -30,19 +35,16 @@ local mappings = {
         -- Symbols
         s = { '<cmd>SymbolsOutline<cr>', 'Symbols' },
 
-        -- Org mode
-        o = 'Org mode',
-
         -- Buffers
-        c = { '<cmd>%bd|e#|bd#<cr>', 'Close all but current' },
-        C = { '<cmd>bufdo bwipeout<cr>', 'Close all buffers' },
+        [' '] = { '<cmd>Neotree buffers<cr>', 'Buffers' },
 
         -- FZF
-        b = { "<cmd>lua require('fzf-lua').buffers()<cr>", 'Buffers' },
         f = { "<cmd>lua require('fzf-lua').files()<cr>", 'Files' },
         h = { "<cmd>lua require('fzf-lua').oldfiles()<cr>", 'History' },
         r = { "<cmd>lua require('fzf-lua').live_grep_glob()<cr>", 'Ripgrep' },
-        ['"'] = { "<cmd>lua require('fzf-lua').registers()<cr>", 'Registers' },
+
+        -- Mind
+        m = { require('mind').open_main, 'Mind' },
 
         -- Git
         g = {
@@ -50,6 +52,19 @@ local mappings = {
             g = { '<cmd>lua _lazygit_toggle()<cr>', 'Lazygit' },
             c = { '<cmd>Git mergetool<cr>', 'Conflicts' },
             d = { '<cmd>DiffviewOpen<cr>', 'Diffview' },
+        },
+
+        -- Debug
+        d = {
+            name = 'Debug',
+            u = { require('dapui').toggle, 'Toggle sidebar' },
+            b = { require('dap').toggle_breakpoint, 'Toggle breakpoint' },
+            B = {
+                function()
+                    require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+                end,
+                'Conditional breakpoint',
+            },
         },
 
         -- LSP

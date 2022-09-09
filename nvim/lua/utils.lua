@@ -17,6 +17,10 @@ function M.has_value(tab, val)
     return false
 end
 
+function M.is_empty(s)
+    return s == nil or s == ''
+end
+
 function M.table_merge(t1, t2)
     for k, v in pairs(t2) do
         if type(v) == 'table' then

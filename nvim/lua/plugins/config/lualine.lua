@@ -2,6 +2,7 @@ local M = {}
 
 local lualine = require 'lualine'
 local colors = require 'colors'
+local navic = require 'nvim-navic'
 local window_width_limit = 70
 
 local lsp_cache = {}
@@ -36,11 +37,6 @@ M.components = {
         end,
         color = { fg = colors.yellow },
         cond = M.conditions.hide_in_width,
-    },
-    mode = {
-        function()
-            return ''
-        end,
     },
     lsp = {
         function()
@@ -88,6 +84,25 @@ M.components = {
         'filetype',
         colored = false,
     },
+    icon = {
+        'filetype',
+        icon_only = true,
+        colored = true,
+        padding = { left = 1, right = 0 },
+    },
+    filename = {
+        'filename',
+        path = 0,
+        color = function(section)
+            return { fg = vim.bo.modified and colors.yellow or colors.fg }
+        end,
+        symbols = {
+            modified = ' ●', -- Text to show when the file is modified.
+            readonly = '',
+            unnamed = '[No Name]', -- Text to show for unnamed buffers.
+            newfile = '[New]', -- Text to show for new created file before first writting
+        },
+    },
     scrollbar = {
         function()
             local current_line = vim.fn.line '.'
@@ -101,12 +116,22 @@ M.components = {
         color = { fg = colors.yellow, bg = colors.bg },
         cond = nil,
     },
+    dap = {
+        function()
+            return require('dap').status()
+        end,
+    },
+    navic = {
+        navic.get_location,
+        cond = navic.is_available,
+        color = { fg = colors.fg },
+    },
 }
 
 M.themes = {}
 
 local linebg = colors.bg
-M.themes.tokyonight_custom = {
+M.themes.custom = {
     normal = {
         a = { bg = colors.blue, fg = colors.black },
         b = { bg = linebg, fg = colors.blue },
@@ -137,21 +162,31 @@ M.themes.tokyonight_custom = {
 
 function M.setup()
     lualine.setup {
+        extensions = {
+            'neo-tree',
+            'nvim-dap-ui',
+            'quickfix',
+            'symbols-outline',
+            'toggleterm',
+        },
+        disabled_filetypes = {
+            tabline = { 'packer', 'neo-tree' },
+        },
         options = {
-            theme = M.themes.tokyonight_custom,
-            globalstatus = true,
+            theme = M.themes.custom,
             always_divide_middle = true,
             section_separators = '',
             component_separators = '',
         },
         sections = {
-            lualine_a = { M.components.filetype },
-            lualine_b = { 'branch', M.components.gitstatus },
-            lualine_c = { 'diagnostics', M.components.treesitter },
-            lualine_x = { 'location' },
-            lualine_y = { M.components.lsp },
-            lualine_z = { M.components.scrollbar },
+            lualine_a = { 'mode' },
+            lualine_b = { 'branch' },
+            lualine_c = { 'filename' },
+            lualine_x = { M.components.filetype },
+            lualine_y = { M.components.treesitter, M.components.lsp },
+            lualine_z = {},
         },
+        inactive_sections = {},
     }
 end
 

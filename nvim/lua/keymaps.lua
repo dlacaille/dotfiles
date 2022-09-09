@@ -24,6 +24,12 @@ function M.setup()
     -- LSP
     map('n', '<C-a>', '<cmd>CodeActionMenu<cr>')
 
+    -- DAP
+    map('n', '<F5>', require('dap').continue)
+    map('n', '<F6>', require('dap').step_over)
+    map('n', '<F7>', require('dap').step_into)
+    map('n', '<F8>', require('dap').step_out)
+
     -- Move lines
     map('n', '<A-j>', ':m .+1<CR>==')
     map('n', '<A-k>', ':m .-2<CR>==')

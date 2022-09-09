@@ -1,5 +1,4 @@
 vim.g.mapleader = ' '
-vim.g.python3_host_prog = '/usr/local/bin/python3'
 vim.g.tpipeline_cursormoved = true
 vim.g.cursorhold_updatetime = 100
 
@@ -15,7 +14,8 @@ vim.o.undofile = true
 vim.o.mouse = 'a'
 vim.o.scrolloff = 6
 vim.o.lazyredraw = true
-vim.o.laststatus = 3
+vim.o.laststatus = 0
+vim.o.ruler = 0
 vim.o.redrawtime = 10000
 vim.o.wrap = false
 vim.o.expandtab = true
@@ -27,9 +27,12 @@ vim.o.timeoutlen = 200
 vim.o.completeopt = 'menu,menuone,noselect'
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.o.winbar = " %{%v:lua.require'nvim-navic'.get_location()%}"
 
 vim.wo.number = true
 vim.wo.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.wo.foldcolumn = '0'
 vim.wo.foldlevel = 99
 vim.wo.foldenable = true
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
