@@ -22,11 +22,7 @@ echo "Configuring lazygit"
 ln -s ~/.config/lazygit ~/Library/Application\ Support/lazygit
 
 echo "Installing common apps with homebrew..."
-brew install slack discord firefox google-chrome docker fzf rg bat go karabiner-elements lazygit
-
-echo "Installing python"
-brew install pyenv
-pyenv install 2.7.18
+brew install slack firefox google-chrome docker fzf rg bat go karabiner-elements lazygit
 
 echo "Setting up git"
 git config --global user.name "Dominic Lacaille"
@@ -40,10 +36,13 @@ nvm install --lts
 echo "Creating Projects folder"
 mkdir ~/Projects
 
-echo "Installing neovim"
-brew install neovim
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
 echo "Installing wezterm"
 brew tap wez/wezterm
 brew install --cask wez/wezterm/wezterm
+
+echo "Installing AstroNvim"
+brew install neovim
+mv ~/.config/nvim ~/.config/nvim.bak # Move nvim config to backup
+git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+rsync -av ~/.config/nvim.bak ~/.config/nvim # Sync new files
+rm -rf ~/.config/nvim.bak # Delete backup
