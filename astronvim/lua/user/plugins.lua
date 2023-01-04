@@ -32,6 +32,11 @@ return {
         },
     },
     ["neo-tree"] = {
+        filesystem = {
+            filtered_items = {
+                visible = true,
+            } 
+        },
         event_handlers = {
             {
                 event = "file_opened",
