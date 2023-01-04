@@ -39,6 +39,7 @@ mkdir ~/Projects
 echo "Installing wezterm"
 brew tap wez/wezterm
 brew install --cask wez/wezterm/wezterm
+tempfile=$(mktemp) \\n  && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo \\n  && tic -x -o ~/.terminfo $tempfile \\n  && rm $tempfile
 
 echo "Installing AstroNvim"
 brew install neovim
