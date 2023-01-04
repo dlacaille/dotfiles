@@ -32,7 +32,6 @@ return {
 	initial_cols = 120,
 	initial_rows = 40,
 	window_decorations = "RESIZE",
-	-- window_background_opacity = 0.8,
 	window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
 	keys = { { key = "raw:33", mods = "CTRL", action = wezterm.action.SendString("\u{1e}") } },
 	colors = {
