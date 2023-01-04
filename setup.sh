@@ -42,7 +42,5 @@ brew install --cask wez/wezterm/wezterm
 
 echo "Installing AstroNvim"
 brew install neovim
-mv ~/.config/nvim ~/.config/nvim.bak # Move nvim config to backup
 git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
-rsync -av ~/.config/nvim.bak ~/.config/nvim # Sync new files
-rm -rf ~/.config/nvim.bak # Delete backup
+ln -s ~/.config/astronvim/lua/user ~/.config/nvim/lua

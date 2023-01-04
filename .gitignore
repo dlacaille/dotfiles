@@ -11,7 +11,4 @@ tmuxinator
 automatic_backups
 recentservers.xml
 gh
-
-# AstroNvim
 nvim
-!nvim/lua/user
