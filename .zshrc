@@ -101,21 +101,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias v="nvim"
-alias mux="tmuxinator"
-alias pn="pnpm"
 
 export EDITOR="nvim"
-
-export PATH="$PATH:$HOME/.composer/vendor/bin"
-export PATH="$(pyenv root)/shims:$PATH"
-export PATH="$(pyenv root)/shims:$PATH"
-export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
-export PATH="$PATH:$HOME/Projects/dex2jar/dex-tools/build/distributions/dex-tools-2.2-SNAPSHOT"
-
-export CPPFLAGS="-I/usr/local/opt/openjdk@11/include"
-export JAVA_HOME=$(/usr/libexec/java_home -v11)
 
 export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-export PATH="/usr/local/opt/ruby/bin:$PATH"
