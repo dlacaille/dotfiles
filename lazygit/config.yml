@@ -1,9 +1,12 @@
 gui:
-    theme:
-        selectedLineBgColor:
-            - reverse
-        selectedRangeBgColor:
-            - reverse
-    paging:
-        colorArg: always
-        pager: delta -s --dark --paging=never --24-bit-color=never
+  nerdFontsVersion: '3'
+  theme:
+    selectedLineBgColor:
+      - reverse
+    selectedRangeBgColor:
+      - reverse
+  paging:
+    colorArg: always
+    pager: delta -s --dark --paging=never --24-bit-color=never
+git:
+  parseEmoji: true
