@@ -1,0 +1,53 @@
+source ~/.profile
+emulate sh -c 'source /etc/profile'
+
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="robbyrussell"
+
+plugins=(
+  git
+  dnf
+  node
+  npm
+  you-should-use
+  zsh-autosuggestions
+  zsh-bat
+  zsh-syntax-highlighting
+  zsh-interactive-cd
+  zsh-navigation-tools
+)
+
+source $ZSH/oh-my-zsh.sh
+
+alias v='nvim'
+
+export NODE_OPTIONS="--max-old-space-size=4096"
+export EDITOR="nvim"
+
+# cargo
+export CARGO_HOME="$HOME/.cargo"
+case ":$PATH:" in
+  *":$CARGO_HOME/bin:"*) ;;
+  *) export PATH="$CARGO_HOME/bin:$PATH" ;;
+esac
+# cargo end
+
+# pnpm
+export PNPM_HOME="/home/dlacaille/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+. "/home/dlacaille/.deno/env"
+
+[ -f "/home/dlacaille/.ghcup/env" ] && . "/home/dlacaille/.ghcup/env" # ghcup-env
+
+# Added by get-aspire-cli.sh
+export PATH="$HOME/.aspire/bin:$PATH"

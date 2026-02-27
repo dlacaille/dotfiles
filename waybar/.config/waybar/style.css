@@ -1,0 +1,334 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Waybar — Catppuccin Mocha Theme with Underlined Sections
+   Place at: ~/.config/waybar/style.css
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Catppuccin Mocha Palette ─────────────────────────────────────── */
+@define-color base    #1e1e2e;
+@define-color mantle  #181825;
+@define-color crust   #11111b;
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color surface2 #585b70;
+@define-color overlay0 #6c7086;
+@define-color overlay1 #7f849c;
+@define-color overlay2 #9399b2;
+@define-color subtext0 #a6adc8;
+@define-color subtext1 #bac2de;
+@define-color text    #cdd6f4;
+@define-color brighttext #f0f4fc;
+@define-color lavender #b4befe;
+@define-color blue    #89b4fa;
+@define-color sapphire #74c7ec;
+@define-color sky     #89dceb;
+@define-color teal    #94e2d5;
+@define-color green   #a6e3a1;
+@define-color yellow  #f9e2af;
+@define-color peach   #fab387;
+@define-color maroon  #eba0ac;
+@define-color red     #f38ba8;
+@define-color mauve   #cba6f7;
+@define-color pink    #f5c2e7;
+@define-color flamingo #f2cdcd;
+@define-color rosewater #f5e0dc;
+
+/* ── Accent ───────────────────────────────────────────────────────── */
+@define-color accent  @mauve;
+@define-color accent2 @blue;
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* GLOBAL                                                               */
+/* ════════════════════════════════════════════════════════════════════ */
+
+* {
+  font-family: "Fira Code Nerd Font", sans-serif;
+  font-size: 13px;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+window#waybar {
+  background: linear-gradient(to bottom, rgba(17, 17, 27, 0.5), transparent);
+  color: @text;
+}
+
+window#waybar > box {
+  /* background-color: @crust; */
+  margin-top: 2px;
+  margin-bottom: 4px;
+  /* box-shadow: 0 2px 4px rgba(17, 17, 27, 0.4); */
+}
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* WORKSPACES                                                           */
+/* ════════════════════════════════════════════════════════════════════ */
+
+#workspaces {
+  margin: 4px 8px;
+  padding: 4px 2px;
+  background: @crust;
+  border-radius: 16px;
+  border: 2px solid @surface0;
+  box-shadow: 0 2px 2px rgba(17, 17, 27, 0.3);
+}
+
+#workspaces button {
+  background: @crust;
+  color: @overlay1;
+  margin: 0 2px;
+  padding: 0 8px;
+  min-width: 24px;
+  border-radius: 16px;
+  transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+  color: @text;
+  background: @surface0;
+}
+
+#workspaces button.active {
+  color: @blue;
+  background: @surface0;
+  font-weight: bold;
+}
+
+#workspaces button.special.active {
+  color: @peach;
+}
+
+#workspaces button.urgent {
+  background: @red;
+  color: @crust;
+}
+
+#workspaces button.empty {
+  color: @surface2;
+}
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* CENTER MODULES                                                       */
+/* ════════════════════════════════════════════════════════════════════ */
+.modules-center {
+  color: @brighttext;
+}
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* CLOCK                                                                */
+/* ════════════════════════════════════════════════════════════════════ */
+
+#clock {
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* RIGHT MODULES — shared base                                          */
+/* ════════════════════════════════════════════════════════════════════ */
+.modules-right {
+  margin: 4px 8px;
+  padding: 4px 2px;
+  background: @crust;
+  border-radius: 16px;
+  border: 2px solid @surface0;
+  box-shadow: 0 2px 2px rgba(17, 17, 27, 0.3);
+}
+
+.modules-right > widget:first-child > * {
+  padding-left: 12px;
+}
+
+.modules-right > widget:last-child > * {
+  padding-right: 12px;
+  border-right: 0;
+}
+
+.modules-right > widget > * {
+  border-radius: 16px;
+  margin: 0 2px;
+  padding: 0 8px;
+  transition: all 0.2s ease;
+}
+
+.modules-right > widget > *:hover {
+  background: @surface0;
+  color: @blue;
+}
+
+/* ── Fedora Logo ────────────────────────────────────────────────── */
+#custom-fedora-logo {
+  color: @brighttext;
+  background: none;
+  font-size: 16px;
+  margin: 0 6px 0 12px;
+}
+
+#custom-fedora-logo:hover {
+  color: @blue;
+}
+
+/* ── Language Indicator ─────────────────────────────────────────── */
+#language {
+}
+
+/* ── Volume ─────────────────────────────────────────────────────── */
+#pulseaudio {
+}
+
+#pulseaudio.muted {
+  color: @overlay0;
+}
+
+/* ── Network ────────────────────────────────────────────────────── */
+#network {
+}
+
+#network.disconnected {
+  color: @red;
+}
+
+/* ── Bluetooth ──────────────────────────────────────────────────── */
+#bluetooth {
+}
+
+#bluetooth.disabled {
+  color: @overlay0;
+}
+
+/* ── Battery ────────────────────────────────────────────────────── */
+#battery {
+  background: @crust;
+  color: @green;
+}
+
+#battery.charging {
+  color: @teal;
+}
+
+#battery.warning:not(.charging) {
+  color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+  color: @red;
+  animation: blink 0.7s infinite;
+}
+
+/* ── System Tray ────────────────────────────────────────────────── */
+#tray {
+  background: @crust;
+  padding: 0 6px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: @red;
+  border-radius: 4px;
+}
+
+/* ── Custom Updates ─────────────────────────────────────────────── */
+#custom-updates {
+  font-size: 13px;
+}
+
+#custom-updates.updated {
+  color: @green;
+}
+
+#custom-updates.few {
+  color: @teal;
+}
+
+#custom-updates.many {
+  color: @peach;
+}
+
+#custom-updates.critical {
+  color: @red;
+}
+
+/* ── SwayNC ─────────────────────────────────────────────────────── */
+#custom-swaync {
+  padding: 0 10px;
+}
+
+#custom-swaync.notification {
+  background: @red;
+  color: @crust;
+}
+
+#custom-swaync.dnd-notification,
+#custom-swaync.dnd-none {
+  color: @overlay0;
+}
+
+/* ── Power Button ───────────────────────────────────────────────── */
+#custom-power {
+  color: @red;
+  font-size: 16px;
+  padding: 0 10px;
+  margin-right: 4px;
+}
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* TOOLTIPS                                                             */
+/* ════════════════════════════════════════════════════════════════════ */
+
+tooltip {
+  background: @mantle;
+  border: 1px solid @accent;
+  border-radius: 8px;
+  color: @text;
+}
+
+tooltip label {
+  color: @text;
+  padding: 4px 8px;
+}
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* MENUS                                                                */
+/* ════════════════════════════════════════════════════════════════════ */
+
+menu {
+  border-radius: 8px;
+  background: @crust;
+  color: @text;
+}
+menuitem {
+  padding: 8px 4px;
+  border-radius: 0;
+  min-width: 100px;
+}
+menuitem:hover {
+  background: @surface0;
+  color: @blue;
+}
+menuitem:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+menuitem:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* ANIMATIONS                                                           */
+/* ════════════════════════════════════════════════════════════════════ */
+
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}

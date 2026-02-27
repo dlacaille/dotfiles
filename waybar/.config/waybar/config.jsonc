@@ -1,0 +1,241 @@
+// Waybar Config — Catppuccin Mocha | Hyprland
+// Place at: ~/.config/waybar/config.jsonc
+{
+    "layer": "top",
+    "position": "top",
+    "height": 44,
+    "margin-bottom": -8,
+    "reload_style_on_change": true,
+    // ── Left: Workspaces ──────────────────────────────────────────────
+    "modules-left": [
+        "custom/fedora-logo",
+        "hyprland/workspaces"
+    ],
+    // ── Center: Taskbar (icon-only, current output) + Clock ──────────
+    "modules-center": [
+        "hyprland/window",
+        "clock"
+    ],
+    // ── Right: System modules ─────────────────────────────────────────
+    "modules-right": [
+        "hyprland/language",
+        "pulseaudio",
+        "network",
+        "bluetooth",
+        "battery",
+        "custom/updates",
+        "tray",
+        "custom/swaync",
+    ],
+    // ════════════════════════════════════════════════════════════════════
+    // MODULE CONFIGS
+    // ════════════════════════════════════════════════════════════════════
+    "custom/fedora-logo": {
+        "format": "",
+        "tooltip": false,
+        "menu": "on-click",
+        "menu-file": "~/.config/waybar/os-menu.xml",
+        "menu-actions": {
+            "shutdown": "shutdown",
+            "reboot": "reboot",
+            "suspend": "systemctl suspend",
+            "hibernate": "systemctl hibernate",
+        },
+    },
+    "hyprland/workspaces": {
+        "format": "{name} {icon}{windows}",
+        "format-icons": {
+            "urgent": "󱈸 ",
+            "active": "",
+            "default": "",
+            "special": "",
+        },
+        "sort-by-number": true,
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "all-outputs": true,
+        "show-special": true,
+        "workspace-taskbar": {
+            "enable": true,
+            "update-active-window": false,
+            "format": "{icon}",
+            "icon-size": 16,
+        },
+    },
+    "hyprland/window": {
+        "format": "{}",
+        "separate-outputs": true,
+    },
+    "hyprland/language": {
+        "format": "󰌌 {}",
+        "format-en": "en",
+        "format-en-intl": "intl",
+        "on-click": "hyprctl switchxkblayout all next",
+    },
+    "clock": {
+        "format": "  {:%a %b %d  %H:%M}",
+        "format-alt": "  {:%Y-%m-%d  %H:%M:%S}",
+        "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#cdd6f4'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'>{}</span>",
+                "weeks": "<span color='#89b4fa'>W{}</span>",
+                "weekdays": "<span color='#a6e3a1'><b>{}</b></span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>",
+            },
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down",
+        },
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 Muted",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󰋎",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                "󰕿",
+                "󰖀",
+                "󰕾"
+            ],
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "tooltip": true,
+    },
+    "network": {
+        "format-wifi": "󰤨 {signalStrength}%",
+        "format-ethernet": "󰈀 Wired",
+        "format-disconnected": "󰤭 Offline",
+        "format-linked": "󰤭 {ifname} (No IP)",
+        "tooltip-format-wifi": "󰤨 {essid} ({signalStrength}%)\n{ipaddr}/{cidr}",
+        "tooltip-format-ethernet": "󰈀 {ifname}\n{ipaddr}/{cidr}",
+        "tooltip-format-disconnected": "Disconnected",
+        "on-click": "nm-connection-editor",
+        "interval": 5,
+    },
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "󰂲",
+        "format-connected": "󰂱 {num_connections}",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "blueman-manager",
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15,
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-icons": [
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ],
+        "tooltip-format": "{timeTo}\n{capacity}% — {power}W",
+    },
+    "cpu": {
+        "format": "󰍛 {usage}%",
+        "tooltip-format": "CPU: {usage}%\nLoad: {load}",
+        "interval": 2,
+        "on-click": "konsole -e htop",
+    },
+    "memory": {
+        "format": "󰾆 {percentage}%",
+        "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB",
+        "interval": 5,
+        "on-click": "konsole -e htop",
+    },
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon} {temperatureC}°C",
+        "format-icons": [
+            "󱃃",
+            "󰔏",
+            "󱃂"
+        ],
+        "tooltip": true,
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": [
+            "󰃞",
+            "󰃟",
+            "󰃠"
+        ],
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-",
+    },
+    "custom/updates": {
+        "exec": "~/.config/waybar/scripts/fedora-updates.sh",
+        "return-type": "json",
+        "interval": 1800,
+        "signal": 8,
+        //"on-click": "konsole -e \"sudo dnf update -y --allowerasing && flatpak update -y && pkill -SIGRTMIN+8 waybar\"",
+        "on-click": "plasma-discover --mode update && pkill -SIGRTMIN+8 waybar",
+        "tooltip": true,
+        "format": "{}",
+        "icon-size": 14,
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 8,
+    },
+    "custom/teams": {
+        "exec": "~/.config/waybar/scripts/teams-notify.sh",
+        "return-type": "json",
+        "interval": 10,
+        "tooltip": true,
+        "on-click": "teams-for-linux",
+        "signal": 1,
+    },
+    "custom/swaync": {
+        "tooltip": true,
+        "format": "{icon} {0}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "󰂜",
+            "dnd-notification": "󰂠",
+            "dnd-none": "󰪓",
+            "inhibited-notification": "󰂛",
+            "inhibited-none": "󰪑",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰪑",
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true,
+    },
+    "custom/power": {
+        "format": "󰐥",
+        "tooltip": false,
+        "on-click": "hyprshutdown",
+    },
+}
