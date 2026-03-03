@@ -21,6 +21,8 @@
         "hyprland/language",
         "pulseaudio",
         "network",
+        "cpu",
+        "memory",
         "bluetooth",
         "battery",
         "custom/updates",
