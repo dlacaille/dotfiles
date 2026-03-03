@@ -20,6 +20,8 @@ dotfiles/
 
 Clone the repo and use `stow` from within the `dotfiles` directory:
 
+> Note: For stow to work, the dotfiles repository MUST be a subdirectory of $HOME. Stow will by always symlink packages to the parent directory.
+
 ```bash
 git clone <repo-url> ~/dotfiles
 cd ~/dotfiles
