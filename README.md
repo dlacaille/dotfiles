@@ -2,8 +2,8 @@
 
 Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-<img src="screenshot_empty.png" width="512">
-<img src="screenshot_fetch.png" width="512">
+<img src="screenshot_empty.png" width="768">
+<img src="screenshot_fetch.png" width="768">
 
 ## Structure
 
