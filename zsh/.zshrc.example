@@ -1,5 +1,0 @@
-# Do not remove this, it is used to source the shared configuration from dotfiles.
-source ~/.zsh_shared
-
-# Add your local customizations here. For example, you can set your PATH variable:
-# export PATH="$HOME/.example/bin:$PATH"

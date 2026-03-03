@@ -35,3 +35,7 @@ stow -D zsh
 ```
 
 Stow creates symlinks in the parent directory (`$HOME` by default), so `dotfiles/zsh/.zshrc` becomes `~/.zshrc`.
+
+## ZSH Configuration
+
+The zsh package provides a `.zshrc` file which can be customized with a `.zshrc.local` file. This file will be automatically created by `.zshrc` if it does not exist.
