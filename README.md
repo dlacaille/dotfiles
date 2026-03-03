@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Features a "riced" hyprland config with a catppucin-based theme.
+Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Features a "riced" [Hyprland](https://hypr.land/) config with a [Catppucin](https://catppuccin.com/)-based theme.
 
 <img src="screenshot_empty.png" width="768">
 <img src="screenshot_fetch.png" width="768">
@@ -23,8 +23,6 @@ dotfiles/
 
 Clone the repo and use `stow` from within the `dotfiles` directory:
 
-> Note: For stow to work, the dotfiles repository MUST be a subdirectory of $HOME. Stow will by always symlink packages to the parent directory.
-
 ```bash
 git clone <repo-url> ~/dotfiles
 cd ~/dotfiles
@@ -33,7 +31,7 @@ cd ~/dotfiles
 stow zsh
 
 # Symlink multiple packages
-stow zsh astronvim
+stow zsh astronvim hyprland lazygit vicinae vim
 
 # Remove symlinks for a package
 stow -D zsh
