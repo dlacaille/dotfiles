@@ -23,11 +23,7 @@ return {
         },
         settings = {
           RoslynExtensionsOptions = {
-            enableDecompilationSupport = true,
-            -- enableAnalyzersSupport = true,
             enableImportCompletion = true,
-            enableAsyncCompletion = true,
-            -- analyzeOpenDocumentsOnly = true,
           },
         },
       },
