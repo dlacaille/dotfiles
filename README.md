@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
+Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Features a "riced" hyprland config with a catppucin-based theme.
 
 <img src="screenshot_empty.png" width="768">
 <img src="screenshot_fetch.png" width="768">
