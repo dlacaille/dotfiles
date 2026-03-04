@@ -14,7 +14,12 @@ return {
           function() require("astrocore.buffer").nav(-1) end,
           desc = "Previous buffer",
         },
-        ["<S-Tab>"] = "<C-^>",
+        ["<S-Tab>"] = {
+          function()
+            if vim.bo.buftype == "" then vim.cmd "b#" end
+          end,
+          desc = "Alternate buffer",
+        },
         ["<leader>gg"] = {
           function() Snacks.lazygit() end,
           desc = "Lazygit",
