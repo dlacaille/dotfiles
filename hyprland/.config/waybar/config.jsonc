@@ -9,7 +9,8 @@
     // ── Left: Workspaces ──────────────────────────────────────────────
     "modules-left": [
         "custom/fedora-logo",
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "custom/spotify",
     ],
     // ── Center: Taskbar (icon-only, current output) + Clock ──────────
     "modules-center": [
@@ -207,13 +208,16 @@
         "icon-size": 18,
         "spacing": 8,
     },
-    "custom/teams": {
-        "exec": "~/.config/waybar/scripts/teams-notify.sh",
-        "return-type": "json",
-        "interval": 10,
-        "tooltip": true,
-        "on-click": "teams-for-linux",
+    "custom/spotify": {
+        "exec": "~/.config/waybar/scripts/spotify-now-playing.sh",
+        "exec-on-event": false,
+        "interval": 3,
         "signal": 1,
+        "max-length": 30,
+        "return-type": "json",
+        "on-click": "playerctl play-pause && pkill -RTMIN+1 waybar",
+        "on-scroll-up": "playerctl next && pkill -RTMIN+1 waybar",
+        "on-scroll-down": "playerctl previous && pkill -RTMIN+1 waybar",
     },
     "custom/swaync": {
         "tooltip": true,
