@@ -26,6 +26,9 @@ alias v='nvim'
 export NODE_OPTIONS="--max-old-space-size=4096"
 export EDITOR="nvim"
 
+# Initialize zoxide
+eval "$(zoxide init zsh)"
+
 # Create ~/.zshrc.local if it doesn't exist and source it
 if [ ! -f ~/.zshrc.local ]; then
   echo '# Add your local customizations here. For example, you can set your PATH variable:' > ~/.zshrc.local
