@@ -51,15 +51,13 @@
 }
 
 window#waybar {
-  background: linear-gradient(to bottom, rgba(17, 17, 27, 0.5), transparent);
+  background: linear-gradient(to bottom, alpha(@crust, 0.5), transparent);
   color: @text;
 }
 
 window#waybar > box {
-  /* background-color: @crust; */
   margin-top: 2px;
   margin-bottom: 4px;
-  /* box-shadow: 0 2px 4px rgba(17, 17, 27, 0.4); */
 }
 
 /* ════════════════════════════════════════════════════════════════════ */
@@ -69,14 +67,12 @@ window#waybar > box {
 #workspaces {
   margin: 4px 8px;
   padding: 4px 2px;
-  background: @crust;
+  background: alpha(@crust, 0.6);
   border-radius: 16px;
-  border: 2px solid @surface0;
-  box-shadow: 0 2px 2px rgba(17, 17, 27, 0.3);
+  box-shadow: 0 2px 2px alpha(@crust, 0.3);
 }
 
 #workspaces button {
-  background: @crust;
   color: @overlay1;
   margin: 0 2px;
   padding: 0 8px;
@@ -86,13 +82,13 @@ window#waybar > box {
 }
 
 #workspaces button:hover {
-  color: @text;
+  color: @blue;
   background: @surface0;
 }
 
 #workspaces button.active {
   color: @blue;
-  background: @surface0;
+  background: @surface1;
   font-weight: bold;
 }
 
@@ -138,10 +134,9 @@ window#waybar > box {
 .modules-right {
   margin: 4px 8px;
   padding: 4px 2px;
-  background: @crust;
+  background: alpha(@crust, 0.6);
   border-radius: 16px;
-  border: 2px solid @surface0;
-  box-shadow: 0 2px 2px rgba(17, 17, 27, 0.3);
+  box-shadow: 0 2px 2px alpha(@crust, 0.3);
 }
 
 .modules-right > widget:first-child > * {
@@ -207,7 +202,6 @@ window#waybar > box {
 
 /* ── Battery ────────────────────────────────────────────────────── */
 #battery {
-  background: @crust;
   color: @green;
 }
 
@@ -226,7 +220,6 @@ window#waybar > box {
 
 /* ── System Tray ────────────────────────────────────────────────── */
 #tray {
-  background: @crust;
   padding: 0 6px;
 }
 
