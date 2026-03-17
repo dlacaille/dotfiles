@@ -107,9 +107,12 @@ window#waybar > box {
 
 /* ── Spotify ─────────────────────────────────────────────────────── */
 #custom-spotify {
+  background: alpha(mix(@green, @crust, 0.7), 0.6);
   color: @green;
-  margin: 4px 8px;
-  border-radius: 8px;
+  margin: 4px 8px 4px 0;
+  padding: 0 12px 0 10px;
+  border-radius: 16px;
+  box-shadow: 0 2px 2px alpha(@crust, 0.3);
 }
 
 /* ════════════════════════════════════════════════════════════════════ */
@@ -117,6 +120,7 @@ window#waybar > box {
 /* ════════════════════════════════════════════════════════════════════ */
 .modules-center {
   color: @brighttext;
+  text-shadow: 0 0 3px @crust;
 }
 
 /* ════════════════════════════════════════════════════════════════════ */
@@ -192,12 +196,34 @@ window#waybar > box {
   color: @red;
 }
 
+/* ── Network ────────────────────────────────────────────────────── */
+#custom-cloudflare {
+  padding-left: 6px;
+  padding-right: 10px;
+}
+#custom-cloudflare.connected {
+  color: @peach;
+}
+#custom-cloudflare.connecting {
+  color: @blue;
+}
+#custom-cloudflare.disconnected {
+  color: @surface1;
+}
+#custom-cloudflare.error {
+  color: @red;
+}
+
 /* ── Bluetooth ──────────────────────────────────────────────────── */
 #bluetooth {
 }
 
 #bluetooth.disabled {
   color: @overlay0;
+}
+
+/* ── Cpu ────────────────────────────────────────────────────── */
+#cpu {
 }
 
 /* ── Battery ────────────────────────────────────────────────────── */
