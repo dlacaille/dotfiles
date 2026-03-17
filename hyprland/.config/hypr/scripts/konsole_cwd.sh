@@ -22,7 +22,7 @@ fi
 
 # Open Konsole in that directory, or default to $HOME
 if [[ -n "$CWD" && -d "$CWD" ]]; then
-    konsole --workdir "$CWD" &
+    konsole --workdir "$CWD" "$@" &
 else
-    konsole &
+    konsole "$@" &
 fi
