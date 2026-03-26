@@ -8,8 +8,9 @@ return {
   -- Language packs
   { import = "astrocommunity.pack.cs-omnisharp" },
   { import = "astrocommunity.pack.docker" },
-  { import = "astrocommunity.pack.html-css" },
+  { import = "astrocommunity.pack.eslint" },
   { import = "astrocommunity.pack.haskell" },
+  { import = "astrocommunity.pack.html-css" },
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.pack.mdx" },
   { import = "astrocommunity.pack.prisma" },
