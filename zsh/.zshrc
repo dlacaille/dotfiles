@@ -22,6 +22,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 alias v='nvim'
+alias o='opencode'
 
 export NODE_OPTIONS="--max-old-space-size=4096"
 export EDITOR="nvim"
