@@ -22,8 +22,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 alias v='nvim'
-alias copilot="copilot --allow-tool 'shell(fd)' --allow-tool 'shell(rg)' --deny-tool 'shell(git push)'"
-alias c='copilot'
 
 export NODE_OPTIONS="--max-old-space-size=4096"
 export EDITOR="nvim"
