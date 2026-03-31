@@ -59,6 +59,7 @@
         "on-scroll-down": "hyprctl dispatch workspace e-1",
         "all-outputs": true,
         "show-special": true,
+        "move-to-monitor": true,
         "workspace-taskbar": {
             "enable": true,
             "update-active-window": false,
