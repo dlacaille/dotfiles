@@ -1,4 +1,6 @@
-source ~/.profile
+if [ -f ~/.profile ]; then
+  source ~/.profile
+fi
 emulate sh -c 'source /etc/profile'
 
 # Path to your Oh My Zsh installation.
