@@ -66,7 +66,7 @@ Item {
   readonly property real iconSize: Math.round(capsuleHeight * 0.65)
 
   // Content dimensions
-  readonly property real contentWidth: isBarVertical ? capsuleHeight : workspaceRow.implicitWidth + Style.marginM * 2
+  readonly property real contentWidth: isBarVertical ? capsuleHeight : workspaceRow.implicitWidth + Style.marginS
   readonly property real contentHeight: isBarVertical ? workspaceRow.implicitHeight + Style.marginM * 2 : capsuleHeight
 
   implicitWidth: contentWidth
@@ -128,11 +128,10 @@ Item {
     }
 
     Layout.preferredWidth: visible ? pillContent.implicitWidth + Style.marginS * 2 : 0
-    Layout.preferredHeight: visible ? root.capsuleHeight - 2 : 0
+    Layout.preferredHeight: visible ? root.capsuleHeight - Style.marginS : 0
 
     radius: Style.radiusM
     color: pillBg
-    border.color: pillBorder
 
     Behavior on color {
       ColorAnimation {
@@ -151,10 +150,9 @@ Item {
     RowLayout {
       id: pillContent
       anchors.centerIn: parent
-      spacing: Style.marginXS
 
       NText {
-        anchors.top: parent.top
+        Layout.alignment: Qt.AlignTop
         text: root.displayLabel(pill.modelData)
         color: pill.pillFg
         pointSize: root.barFontSize * 0.85
@@ -212,8 +210,7 @@ Item {
   // Visual capsule background
   Rectangle {
     id: visualCapsule
-    x: Style.pixelAlignCenter(parent.width, width)
-    y: Style.pixelAlignCenter(parent.height, height)
+    anchors.centerIn: parent
     width: root.contentWidth
     height: root.contentHeight
     color: Style.capsuleColor
@@ -224,7 +221,6 @@ Item {
     RowLayout {
       id: workspaceRow
       anchors.centerIn: parent
-      spacing: Style.marginXS
 
       // Normal (numbered) workspaces first
       Repeater {

@@ -30,7 +30,7 @@
     "audio": {
         "mprisBlacklist": [
         ],
-        "preferredPlayer": "",
+        "preferredPlayer": "spotify",
         "spectrumFrameRate": 30,
         "spectrumMirrored": true,
         "visualizerType": "linear",
@@ -49,7 +49,7 @@
         "contentPadding": 6,
         "density": "default",
         "displayMode": "always_visible",
-        "enableExclusionZoneInset": true,
+        "enableExclusionZoneInset": false,
         "fontScale": 1,
         "frameRadius": 12,
         "frameThickness": 8,
@@ -109,7 +109,7 @@
                     "hideMode": "hidden",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
-                    "maxWidth": 180,
+                    "maxWidth": 220,
                     "panelShowAlbumArt": true,
                     "scrollingMode": "hover",
                     "showAlbumArt": true,
@@ -118,7 +118,7 @@
                     "showVisualizer": true,
                     "textColor": "none",
                     "useFixedWidth": false,
-                    "visualizerType": "linear"
+                    "visualizerType": "mirrored"
                 }
             ],
             "right": [
@@ -146,13 +146,17 @@
                 },
                 {
                     "blacklist": [
+                        "spotify-client"
                     ],
                     "chevronColor": "none",
                     "colorizeIcons": false,
-                    "drawerEnabled": true,
+                    "drawerEnabled": false,
                     "hidePassive": false,
                     "id": "Tray",
                     "pinned": [
+                        "Ferdium",
+                        "Microsoft Teams",
+                        "Microsoft Teams (6)"
                     ]
                 },
                 {
@@ -248,7 +252,7 @@
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
-        "predefinedScheme": "Catppuccin Lavender",
+        "predefinedScheme": "Catppuccin",
         "schedulingMode": "off",
         "syncGsettings": true,
         "useWallpaperColors": false
@@ -368,7 +372,7 @@
         "avatarImage": "/home/dlacaille/.face",
         "boxRadiusRatio": 1,
         "clockFormat": "hh\\nmm",
-        "clockStyle": "digital",
+        "clockStyle": "custom",
         "compactLockScreen": true,
         "dimmerOpacity": 0.2,
         "enableBlurBehind": true,
@@ -407,6 +411,7 @@
         "lockScreenBlur": 1,
         "lockScreenCountdownDuration": 10000,
         "lockScreenMonitors": [
+            "eDP-1"
         ],
         "lockScreenTint": 0.2,
         "passwordChars": false,
