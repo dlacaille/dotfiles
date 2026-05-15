@@ -3,5 +3,6 @@ background-blur = true
 background-opacity = 0.9
 font-size = 10
 font-family = Lilex
-font-feature = zero, cv03, ss01, cv08, cv11
+font-feature = zero, cv03, ss01, cv08, cv11, cv15
 confirm-close-surface = false
+config-file = ?config.ghostty.local
