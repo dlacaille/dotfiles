@@ -37,7 +37,9 @@ stow zsh astronvim hyprland lazygit vicinae vim
 stow -D zsh
 ```
 
-Stow creates symlinks in the parent directory (`$HOME` by default), so `dotfiles/zsh/.zshrc` becomes `~/.zshrc`.
+Stow creates symlinks in the parent directory, so `~/dotfiles/zsh/.zshrc` becomes `~/.zshrc`.
+
+> **Note:** For stow to work you MUST clone dotfiles to ~/dotfiles
 
 ## Hyprland Keybinds
 
