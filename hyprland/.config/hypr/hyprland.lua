@@ -321,43 +321,25 @@ hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "down" }))
 hl.bind(mainMod .. " + SHIFT + comma", hl.dsp.window.move({ workspace = "e-1" }))
 hl.bind(mainMod .. " + SHIFT + period", hl.dsp.window.move({ workspace = "e+1" }))
 
--- Bind/unbind Teams call shortcuts depending on active window
-local teams_binds_active = false
-
-local function bind_teams_calls()
-	if teams_binds_active then
-		return
-	end
-	teams_binds_active = true
-	hl.bind("mouse:275", function()
+-- Teams call shortcuts: pass mouse buttons through, send ctrl+shift+m/o if Teams is active
+hl.bind("mouse:275", function()
+	local w = hl.get_active_window()
+	if w ~= nil and w.class == "teams-for-linux" then
 		hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "m", state = "down" }))
 		hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "m", state = "up" }))
-	end, { click = true })
-	hl.bind("mouse:276", function()
+	else
+		hl.dispatch(hl.dsp.pass({ window = "activewindow" }))
+	end
+end)
+hl.bind("mouse:276", function()
+	local w = hl.get_active_window()
+	if w ~= nil and w.class == "teams-for-linux" then
 		hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "o", state = "down" }))
 		hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "o", state = "up" }))
-	end, { click = true })
-end
-
-local function unbind_teams_calls()
-	if not teams_binds_active then
-		return
-	end
-	teams_binds_active = false
-	hl.unbind("mouse:275")
-	hl.unbind("mouse:276")
-end
-
-local function update_teams_binds(w)
-	if w ~= nil and w.class == "teams-for-linux" then
-		bind_teams_calls()
 	else
-		unbind_teams_calls()
+		hl.dispatch(hl.dsp.pass({ window = "activewindow" }))
 	end
-end
-
-hl.on("window.active", update_teams_binds)
-hl.on("window.title", update_teams_binds)
+end)
 
 -- Switch workspaces
 for i = 1, 9 do
