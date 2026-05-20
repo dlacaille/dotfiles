@@ -134,13 +134,6 @@ hl.config({
 			passes = 3,
 			vibrancy = 0.1696,
 		},
-
-		-- glow = {
-		-- 	enabled = true,
-		-- 	color = "rgba(" .. blueAlpha .. "30)",
-		-- 	range = 30,
-		-- 	render_power = 2,
-		-- },
 	},
 
 	animations = {
