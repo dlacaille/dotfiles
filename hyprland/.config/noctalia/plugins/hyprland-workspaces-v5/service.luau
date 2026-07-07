@@ -40,7 +40,7 @@ local function buildIconCache()
     local count = 0
     for _ in pairs(cache) do count = count + 1 end
     noctalia.log("Icon cache built: " .. tostring(count) .. " entries")
-  end)
+  end, 30000)
 end
 
 -- Fetch and publish workspace + monitor + client state

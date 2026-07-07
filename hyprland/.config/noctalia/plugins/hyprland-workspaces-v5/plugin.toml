@@ -1,4 +1,4 @@
-id           = "dlacaille/hyprland-workspaces"
+id           = "dlacaille/hyprland-workspaces-v5"
 name         = "Hyprland Workspaces"
 version      = "1.0.0"
 min_noctalia = "5.0.0"
