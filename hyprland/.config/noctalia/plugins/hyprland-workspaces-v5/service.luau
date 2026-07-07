@@ -77,12 +77,14 @@ local function generateComposite(wsId, clients)
     if p then table.insert(paths, p) end
   end
 
-  local outPath = COMPOSITE_DIR .. "/ws-" .. tostring(wsId) .. ".png"
+  -- Use string keys so JSON round-trip via noctalia.state preserves key type
+  local strId   = tostring(wsId)
+  local outPath = COMPOSITE_DIR .. "/ws-" .. strId .. ".png"
 
   if #paths == 0 then
     -- No icons: remove stale composite if any
-    if composites[wsId] then
-      composites[wsId] = nil
+    if composites[strId] then
+      composites[strId] = nil
       noctalia.state.set("composites", composites)
     end
     return
@@ -96,10 +98,11 @@ local function generateComposite(wsId, clients)
     )
     noctalia.runAsync(cmd, function(r)
       if r.exitCode == 0 then
-        composites[wsId] = outPath
+        composites[strId] = outPath
         noctalia.state.set("composites", composites)
+        noctalia.log("composite ready ws " .. strId .. " -> " .. outPath)
       else
-        noctalia.log("magick single failed ws " .. tostring(wsId) .. ": " .. (r.stderr or ""))
+        noctalia.log("magick single failed ws " .. strId .. ": " .. (r.stderr or ""))
       end
     end)
     return
@@ -116,10 +119,11 @@ local function generateComposite(wsId, clients)
   local cmd = string.format("magick %s +append %q", table.concat(parts, " "), outPath)
   noctalia.runAsync(cmd, function(r)
     if r.exitCode == 0 then
-      composites[wsId] = outPath
+      composites[strId] = outPath
       noctalia.state.set("composites", composites)
+      noctalia.log("composite ready ws " .. strId .. " -> " .. outPath)
     else
-      noctalia.log("magick append failed ws " .. tostring(wsId) .. ": " .. (r.stderr or ""))
+      noctalia.log("magick append failed ws " .. strId .. ": " .. (r.stderr or ""))
     end
   end)
 end
@@ -144,7 +148,7 @@ function generateAllComposites()
 
   -- Clear composites for workspaces that no longer exist
   for wsId in pairs(composites) do
-    if not clientsByWs[wsId] then
+    if not clientsByWs[tonumber(wsId)] then
       composites[wsId] = nil
     end
   end

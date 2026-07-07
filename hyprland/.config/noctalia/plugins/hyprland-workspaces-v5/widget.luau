@@ -137,7 +137,7 @@ local function renderPill(ws, monName)
   }
 
   -- Composite icon strip (generated async by service)
-  local imgPath = composites[wsId]
+  local imgPath = composites[tostring(wsId)]
   if imgPath then
     table.insert(nodes, ui.image({
       path   = imgPath,
