@@ -206,15 +206,29 @@ local function renderPill(ws, monName)
     variant = "ghost"
   end
 
-  -- Label button: pill shape + hover state + workspace switch on click
-  local nodes = {
-    ui.button({
-      text     = wsLabel(ws),
-      variant  = variant,
-      selected = active,
-      onClick  = wsClickName(ws),
-    }),
-  }
+  -- Label: plain text, correctly sized within the pill.
+  -- Workspace switch uses a compact button; when no click is available, a label.
+  local clickName = wsClickName(ws)
+  local labelNode
+  if clickName then
+    labelNode = ui.button({
+      text      = wsLabel(ws),
+      variant   = variant,
+      selected  = active,
+      onClick   = clickName,
+      height    = 20,
+      fontSize  = 11,
+    })
+  else
+    labelNode = ui.label({
+      text       = wsLabel(ws),
+      color      = active and "primary" or "on_surface_variant",
+      fontWeight = active and "bold" or "medium",
+      fontSize   = 11,
+    })
+  end
+
+  local nodes = { labelNode }
 
   -- Icon images: one per client, each focuses that window on click
   local clients = clientsByWs[wsId] or {}
@@ -233,16 +247,15 @@ local function renderPill(ws, monName)
     end
   end
 
-  -- Outer row: pill shape with explicit height so it doesn't stretch to full bar height
   local pill = barWidget.isVertical() and ui.column or ui.row
   return pill({
-    fill      = active and (special and "secondary/0.2" or "primary/0.2") or "surface_variant/0.4",
-    radius    = 99,
-    paddingH  = 4,
-    paddingV  = 0,
-    height    = 24,
-    gap       = 2,
-    align     = "center",
+    fill     = active and (special and "secondary/0.25" or "primary/0.25") or "surface_variant/0.4",
+    radius   = 99,
+    paddingH = 6,
+    paddingV = 0,
+    height   = 22,
+    gap      = 3,
+    align    = "center",
   }, nodes)
 end
 
