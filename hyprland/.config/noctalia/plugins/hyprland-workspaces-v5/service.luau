@@ -65,7 +65,7 @@ local function refresh()
       local wsId = (c.workspace or {}).id
       if wsId then
         if not byWs[wsId] then byWs[wsId] = {} end
-        table.insert(byWs[wsId], { class = c.class or "", title = c.title or "", monitor = c.monitor })
+        table.insert(byWs[wsId], { class = c.class or "", title = c.title or "", monitor = c.monitor, address = c.address or "" })
       end
     end
 

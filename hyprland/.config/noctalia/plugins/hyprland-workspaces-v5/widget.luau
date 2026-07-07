@@ -1,23 +1,21 @@
 --!nonstrict
 -- Hyprland Workspaces bar widget.
--- Renders workspace pills with app icons and special workspace support.
--- Each bar instance reads its "monitor" setting to determine which monitor
--- it belongs to. Leave monitor="" to follow the focused monitor (single-monitor
--- setups or when only one bar is used).
+-- Each pill is a ui.row (fill + radius + padding) containing:
+--   - a ui.button for the workspace label (switches workspace / toggles special)
+--   - a ui.button per app window (focuses that window directly)
+-- Since _G is readonly, all click globals are declared statically.
 
 local workspaces  = noctalia.state.get("workspaces")  or {}
 local monitors    = noctalia.state.get("monitors")    or {}
 local clientsByWs = noctalia.state.get("clientsByWs") or {}
 local icons       = noctalia.state.get("icons")       or {}
 
--- Resolve our monitor name: explicit setting wins, else focused output
 local function myMonitor()
   local setting = barWidget.getConfig("monitor") or ""
   if setting ~= "" then return setting end
   return noctalia.focusedOutputName() or ""
 end
 
--- Find the monitor table matching a connector name
 local function findMonitor(name)
   for _, m in ipairs(monitors) do
     if m.name == name then return m end
@@ -25,31 +23,22 @@ local function findMonitor(name)
   return nil
 end
 
--- Strip "special:" prefix for display
 local function wsLabel(ws)
   local name = ws.name or ""
-  if name:sub(1, 8) == "special:" then
-    return name:sub(9)
-  end
+  if name:sub(1, 8) == "special:" then return name:sub(9) end
   if name ~= "" then return name end
   return tostring(ws.id)
 end
 
 local function isSpecial(ws)
-  local name = ws.name or ""
-  return name:sub(1, 8) == "special:"
+  return (ws.name or ""):sub(1, 8) == "special:"
 end
 
--- Determine active workspace id per monitor
 local function activeWsId(monitorName)
   local m = findMonitor(monitorName)
-  if m and m.activeWorkspace then
-    return m.activeWorkspace.id
-  end
-  return nil
+  return m and m.activeWorkspace and m.activeWorkspace.id
 end
 
--- Determine active special workspace name per monitor
 local function activeSpecialName(monitorName)
   local m = findMonitor(monitorName)
   if m and m.specialWorkspace and m.specialWorkspace.name ~= "" then
@@ -58,34 +47,28 @@ local function activeSpecialName(monitorName)
   return nil
 end
 
--- Resolve icon path for an app class
 local function iconPath(class)
   if not class or class == "" then return nil end
   local lower = class:lower()
-  -- Direct match
   if icons[lower] then return icons[lower] end
-  -- Strip reverse-dns prefix: com.example.App -> app
   local short = lower:match("^[a-z]+%.[a-z0-9]+%.(.+)$")
   if short and icons[short] then return icons[short] end
   return nil
 end
 
-local ICON_SIZE = 14
+local ICON_SIZE   = 14
 local PILL_RADIUS = 6
-local PILL_PAD_H = 6
-local PILL_PAD_V = 2
-local GAP = 4
+local PILL_PAD_H  = 6
+local PILL_PAD_V  = 2
+local GAP         = 4
 
--- Click handlers: _G is readonly in v5, so each handler must be a declared global.
--- Regular workspaces 1-20 get one named global each.
--- Special workspaces share one trampoline; the name is stored at render time
--- (only one pill can be clicked at a time).
+-- ── Workspace label click handlers (1-20 + special) ──────────────────────────
 
-local lastClickedSpecialName = ""
+local lastSpecialName = ""
 
 function onWsClickSpecial()
-  if lastClickedSpecialName ~= "" then
-    noctalia.runAsync("hyprctl dispatch togglespecialworkspace " .. lastClickedSpecialName:sub(9))
+  if lastSpecialName ~= "" then
+    noctalia.runAsync("hyprctl dispatch togglespecialworkspace " .. lastSpecialName:sub(9))
   end
 end
 
@@ -117,9 +100,9 @@ local wsClickNames = {
   "onWsClick16", "onWsClick17", "onWsClick18", "onWsClick19", "onWsClick20",
 }
 
-local function clickNameFor(ws)
+local function wsClickName(ws)
   if isSpecial(ws) then
-    lastClickedSpecialName = ws.name
+    lastSpecialName = ws.name
     return "onWsClickSpecial"
   end
   local id = ws.id
@@ -127,9 +110,82 @@ local function clickNameFor(ws)
   return nil
 end
 
+-- ── Window focus click handlers (slots 1-50) ─────────────────────────────────
+-- windowSlots[n] = address string, rebuilt each render before use.
+
+local windowSlots = {}
+local MAX_WIN_SLOTS = 50
+
+local function focusWindow(slot)
+  local addr = windowSlots[slot]
+  if addr and addr ~= "" then
+    noctalia.runAsync("hyprctl dispatch focuswindow address:" .. addr)
+  end
+end
+
+function onWinFocus1()  focusWindow(1)  end
+function onWinFocus2()  focusWindow(2)  end
+function onWinFocus3()  focusWindow(3)  end
+function onWinFocus4()  focusWindow(4)  end
+function onWinFocus5()  focusWindow(5)  end
+function onWinFocus6()  focusWindow(6)  end
+function onWinFocus7()  focusWindow(7)  end
+function onWinFocus8()  focusWindow(8)  end
+function onWinFocus9()  focusWindow(9)  end
+function onWinFocus10() focusWindow(10) end
+function onWinFocus11() focusWindow(11) end
+function onWinFocus12() focusWindow(12) end
+function onWinFocus13() focusWindow(13) end
+function onWinFocus14() focusWindow(14) end
+function onWinFocus15() focusWindow(15) end
+function onWinFocus16() focusWindow(16) end
+function onWinFocus17() focusWindow(17) end
+function onWinFocus18() focusWindow(18) end
+function onWinFocus19() focusWindow(19) end
+function onWinFocus20() focusWindow(20) end
+function onWinFocus21() focusWindow(21) end
+function onWinFocus22() focusWindow(22) end
+function onWinFocus23() focusWindow(23) end
+function onWinFocus24() focusWindow(24) end
+function onWinFocus25() focusWindow(25) end
+function onWinFocus26() focusWindow(26) end
+function onWinFocus27() focusWindow(27) end
+function onWinFocus28() focusWindow(28) end
+function onWinFocus29() focusWindow(29) end
+function onWinFocus30() focusWindow(30) end
+function onWinFocus31() focusWindow(31) end
+function onWinFocus32() focusWindow(32) end
+function onWinFocus33() focusWindow(33) end
+function onWinFocus34() focusWindow(34) end
+function onWinFocus35() focusWindow(35) end
+function onWinFocus36() focusWindow(36) end
+function onWinFocus37() focusWindow(37) end
+function onWinFocus38() focusWindow(38) end
+function onWinFocus39() focusWindow(39) end
+function onWinFocus40() focusWindow(40) end
+function onWinFocus41() focusWindow(41) end
+function onWinFocus42() focusWindow(42) end
+function onWinFocus43() focusWindow(43) end
+function onWinFocus44() focusWindow(44) end
+function onWinFocus45() focusWindow(45) end
+function onWinFocus46() focusWindow(46) end
+function onWinFocus47() focusWindow(47) end
+function onWinFocus48() focusWindow(48) end
+function onWinFocus49() focusWindow(49) end
+function onWinFocus50() focusWindow(50) end
+
+local winFocusNames = {}
+for i = 1, MAX_WIN_SLOTS do
+  winFocusNames[i] = "onWinFocus" .. i
+end
+
+-- ── Rendering ─────────────────────────────────────────────────────────────────
+
+local winSlotCounter = 0
+
 local function renderPill(ws, monName)
   local special = isSpecial(ws)
-  local wsId = ws.id
+  local wsId    = ws.id
 
   local active = false
   if special then
@@ -140,93 +196,82 @@ local function renderPill(ws, monName)
 
   local urgent = ws.hasUrgent or false
 
-  -- Build label: workspace name + icon filenames as text is not possible,
-  -- so we compose a ui.row pill: styled row for visuals, ui.button for clicks.
-  local fg
-  local bg
+  local bg, fg
   if urgent then
-    bg, fg = "tertiary", "on_tertiary"
+    bg, fg = "tertiary",       "on_tertiary"
   elseif active and special then
-    bg, fg = "secondary", "on_secondary"
+    bg, fg = "secondary",      "on_secondary"
   elseif active then
-    bg, fg = "primary", "on_primary"
+    bg, fg = "primary",        "on_primary"
   else
-    bg, fg = "surface_variant", "on_surface_variant"
+    bg, fg = "surface_variant","on_surface_variant"
   end
 
-  -- Inner content: label + app icons
-  local content = {}
-  table.insert(content, ui.label({
-    text       = wsLabel(ws),
-    color      = fg,
-    fontWeight = active and "bold" or "medium",
-  }))
+  -- Workspace label button
+  local labelVariant = active and "primary" or (urgent and "destructive" or "ghost")
+  local children = {
+    ui.button({
+      text     = wsLabel(ws),
+      variant  = labelVariant,
+      selected = active,
+      onClick  = wsClickName(ws),
+    }),
+  }
+
+  -- One icon button per client in this workspace
   local clients = clientsByWs[wsId] or {}
   for _, c in ipairs(clients) do
     local path = iconPath(c.class)
-    if path then
-      table.insert(content, ui.image({
-        path   = path,
-        width  = ICON_SIZE,
-        height = ICON_SIZE,
-        fit    = "contain",
+    if path and winSlotCounter < MAX_WIN_SLOTS then
+      winSlotCounter = winSlotCounter + 1
+      windowSlots[winSlotCounter] = c.address
+      table.insert(children, ui.button({
+        glyph     = nil,
+        onClick   = winFocusNames[winSlotCounter],
+        variant   = "ghost",
+      }, {
+        ui.image({
+          path   = path,
+          width  = ICON_SIZE,
+          height = ICON_SIZE,
+          fit    = "contain",
+        }),
       }))
     end
   end
 
-  -- Styled pill: ui.row provides fill/radius/padding/children.
-  -- onClick goes on ui.image or ui.box wrapping the row, but since neither
-  -- works, we use the widget-level onClick trampoline via a nested ui.button
-  -- (ghost, zero padding) that sits over the label.
-  local innerRow = barWidget.isVertical() and ui.column or ui.row
-  local clickName = clickNameFor(ws)
-
-  -- Wrap the whole pill in a ui.button (ghost variant) to get onClick support,
-  -- with the styled row as a child label substitute. Since ui.button children
-  -- may not render, we use text= for the label and accept no icons for now.
-  -- TODO: find a way to render icons inside clickable pills once the API clarifies.
-  local pillLabel = wsLabel(ws)
-  -- Append a dot per client as a minimal icon indicator when icons can't render
-  local clientCount = #clients
-  if clientCount > 0 then
-    pillLabel = pillLabel .. string.rep(" ·", clientCount)
-  end
-
-  local buttonProps = {
-    text     = pillLabel,
-    variant  = active and "primary" or (urgent and "destructive" or "ghost"),
-    selected = active,
-    onClick  = clickName,
-  }
-  if not clickName then buttonProps.onClick = nil end
-  return ui.button(buttonProps)
+  local pill = barWidget.isVertical() and ui.column or ui.row
+  return pill({
+    fill     = bg,
+    radius   = PILL_RADIUS,
+    paddingH = PILL_PAD_H,
+    paddingV = PILL_PAD_V,
+    gap      = 2,
+    align    = "center",
+  }, children)
 end
 
 local function render()
+  -- Reset window slot assignments each render
+  winSlotCounter = 0
+  for i = 1, MAX_WIN_SLOTS do windowSlots[i] = "" end
+
   local monName = myMonitor()
 
-  -- Sort: regular workspaces by id, specials appended after
   local regular, special = {}, {}
   for _, ws in ipairs(workspaces) do
     if isSpecial(ws) then
-      -- Only show special workspaces that have windows
-      if (ws.windows or 0) > 0 then
-        table.insert(special, ws)
-      end
+      if (ws.windows or 0) > 0 then table.insert(special, ws) end
     else
       table.insert(regular, ws)
     end
   end
   table.sort(regular, function(a, b) return (a.id or 0) < (b.id or 0) end)
-  table.sort(special, function(a, b) return (a.name or "") < (b.name or "") end)
+  table.sort(special,  function(a, b) return (a.name or "") < (b.name or "") end)
 
   local pills = {}
-  for _, ws in ipairs(regular) do
-    table.insert(pills, renderPill(ws, monName))
-  end
-  for _, ws in ipairs(special) do
-    table.insert(pills, renderPill(ws, monName))
-  end
+  for _, ws in ipairs(regular) do table.insert(pills, renderPill(ws, monName)) end
+  for _, ws in ipairs(special)  do table.insert(pills, renderPill(ws, monName)) end
 
   if #pills == 0 then
     barWidget.setVisible(false)
@@ -238,26 +283,12 @@ local function render()
   barWidget.render(container({ gap = GAP, align = "center" }, pills))
 end
 
--- Watch for state changes from the service
-noctalia.state.watch("workspaces", function(v)
-  workspaces = v or {}
-  render()
-end)
+-- ── State watchers ────────────────────────────────────────────────────────────
 
-noctalia.state.watch("monitors", function(v)
-  monitors = v or {}
-  render()
-end)
-
-noctalia.state.watch("clientsByWs", function(v)
-  clientsByWs = v or {}
-  render()
-end)
-
-noctalia.state.watch("icons", function(v)
-  icons = v or {}
-  render()
-end)
+noctalia.state.watch("workspaces",  function(v) workspaces  = v or {}; render() end)
+noctalia.state.watch("monitors",    function(v) monitors    = v or {}; render() end)
+noctalia.state.watch("clientsByWs", function(v) clientsByWs = v or {}; render() end)
+noctalia.state.watch("icons",       function(v) icons       = v or {}; render() end)
 
 function update()
   noctalia.setUpdateInterval(30000)
