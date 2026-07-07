@@ -1,0 +1,24 @@
+id           = "dlacaille/hyprland-workspaces"
+name         = "Hyprland Workspaces"
+version      = "1.0.0"
+min_noctalia = "5.0.0"
+author       = "dlacaille"
+license      = "MIT"
+description  = "Shows workspaces from all monitors with app icons, including special workspaces."
+tags         = ["hyprland", "workspaces"]
+dependencies = ["socat", "hyprctl"]
+
+[[service]]
+id    = "hyprland-ipc"
+entry = "service.luau"
+
+[[widget]]
+id    = "workspaces"
+entry = "widget.luau"
+
+  [[widget.setting]]
+  key         = "monitor"
+  type        = "string"
+  label       = "Monitor"
+  description = "Connector name of the monitor this widget is on (e.g. DP-7, eDP-1). Leave empty to use the focused monitor."
+  default     = ""
