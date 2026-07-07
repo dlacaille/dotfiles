@@ -127,8 +127,10 @@ local function renderPill(ws, monName)
   end
 
   local container = barWidget.isVertical() and ui.column or ui.row
-  return ui.box({ fill = bg, radius = PILL_RADIUS, paddingH = PILL_PAD_H, paddingV = PILL_PAD_V,
-    onClick = "onClickWs_" .. tostring(wsId) }, {
+  local clickName = clickNameFor(ws)
+  local boxProps = { fill = bg, radius = PILL_RADIUS, paddingH = PILL_PAD_H, paddingV = PILL_PAD_V }
+  if clickName then boxProps.onClick = clickName end
+  return ui.box(boxProps, {
     container({ gap = 4, align = "center" }, children),
   })
 end
@@ -169,41 +171,60 @@ local function render()
   barWidget.render(container({ gap = GAP, align = "center" }, pills))
 end
 
--- Workspace click handlers: one global per possible workspace id.
-local function makeClickHandler(wsId)
-  return function()
-    noctalia.runAsync("hyprctl dispatch workspace " .. tostring(wsId))
+-- Click handlers: _G is readonly in v5, so each handler must be a declared global.
+-- Regular workspaces 1-20 get one named global each.
+-- Special workspaces share one trampoline; the last-rendered special name is
+-- stored in lastClickedSpecialName (only one pill can be clicked at a time).
+
+local lastClickedSpecialName = ""
+
+function onWsClickSpecial()
+  if lastClickedSpecialName ~= "" then
+    noctalia.runAsync("hyprctl dispatch togglespecialworkspace " .. lastClickedSpecialName:sub(9))
   end
 end
 
--- Pre-register regular workspaces 1-20
-for i = 1, 20 do
-  local id = i
-  _G["onClickWs_" .. tostring(id)] = makeClickHandler(id)
-end
+function onWsClick1()  noctalia.runAsync("hyprctl dispatch workspace 1")  end
+function onWsClick2()  noctalia.runAsync("hyprctl dispatch workspace 2")  end
+function onWsClick3()  noctalia.runAsync("hyprctl dispatch workspace 3")  end
+function onWsClick4()  noctalia.runAsync("hyprctl dispatch workspace 4")  end
+function onWsClick5()  noctalia.runAsync("hyprctl dispatch workspace 5")  end
+function onWsClick6()  noctalia.runAsync("hyprctl dispatch workspace 6")  end
+function onWsClick7()  noctalia.runAsync("hyprctl dispatch workspace 7")  end
+function onWsClick8()  noctalia.runAsync("hyprctl dispatch workspace 8")  end
+function onWsClick9()  noctalia.runAsync("hyprctl dispatch workspace 9")  end
+function onWsClick10() noctalia.runAsync("hyprctl dispatch workspace 10") end
+function onWsClick11() noctalia.runAsync("hyprctl dispatch workspace 11") end
+function onWsClick12() noctalia.runAsync("hyprctl dispatch workspace 12") end
+function onWsClick13() noctalia.runAsync("hyprctl dispatch workspace 13") end
+function onWsClick14() noctalia.runAsync("hyprctl dispatch workspace 14") end
+function onWsClick15() noctalia.runAsync("hyprctl dispatch workspace 15") end
+function onWsClick16() noctalia.runAsync("hyprctl dispatch workspace 16") end
+function onWsClick17() noctalia.runAsync("hyprctl dispatch workspace 17") end
+function onWsClick18() noctalia.runAsync("hyprctl dispatch workspace 18") end
+function onWsClick19() noctalia.runAsync("hyprctl dispatch workspace 19") end
+function onWsClick20() noctalia.runAsync("hyprctl dispatch workspace 20") end
 
--- Register click handlers for special workspaces (negative ids) and ids >20
-local function refreshClickHandlers()
-  for _, ws in ipairs(workspaces) do
-    local id = ws.id
-    if id then
-      if isSpecial(ws) then
-        local name = ws.name
-        _G["onClickWs_" .. tostring(id)] = function()
-          local shortName = name:sub(9)
-          noctalia.runAsync("hyprctl dispatch togglespecialworkspace " .. shortName)
-        end
-      elseif id > 20 then
-        _G["onClickWs_" .. tostring(id)] = makeClickHandler(id)
-      end
-    end
+local wsClickNames = {
+  "onWsClick1",  "onWsClick2",  "onWsClick3",  "onWsClick4",  "onWsClick5",
+  "onWsClick6",  "onWsClick7",  "onWsClick8",  "onWsClick9",  "onWsClick10",
+  "onWsClick11", "onWsClick12", "onWsClick13", "onWsClick14", "onWsClick15",
+  "onWsClick16", "onWsClick17", "onWsClick18", "onWsClick19", "onWsClick20",
+}
+
+local function clickNameFor(ws)
+  if isSpecial(ws) then
+    lastClickedSpecialName = ws.name
+    return "onWsClickSpecial"
   end
+  local id = ws.id
+  if id >= 1 and id <= 20 then return wsClickNames[id] end
+  return nil
 end
 
 -- Watch for state changes from the service
 noctalia.state.watch("workspaces", function(v)
   workspaces = v or {}
-  refreshClickHandlers()
   render()
 end)
 
