@@ -225,17 +225,12 @@ local function renderPill(ws, monName)
     if path and winSlotCounter < MAX_WIN_SLOTS then
       winSlotCounter = winSlotCounter + 1
       windowSlots[winSlotCounter] = c.address
-      table.insert(children, ui.button({
-        glyph     = nil,
-        onClick   = winFocusNames[winSlotCounter],
-        variant   = "ghost",
-      }, {
-        ui.image({
-          path   = path,
-          width  = ICON_SIZE,
-          height = ICON_SIZE,
-          fit    = "contain",
-        }),
+      table.insert(children, ui.image({
+        path    = path,
+        width   = ICON_SIZE,
+        height  = ICON_SIZE,
+        fit     = "contain",
+        onClick = winFocusNames[winSlotCounter],
       }))
     end
   end
