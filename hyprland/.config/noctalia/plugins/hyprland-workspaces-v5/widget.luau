@@ -56,9 +56,8 @@ local function iconPath(class)
   return nil
 end
 
-local ICON_SIZE   = 14
-local PILL_RADIUS = 6
-local GAP         = 4
+local ICON_SIZE = 14
+local GAP       = 4
 
 -- ── Workspace label click handlers (1-20 + special) ──────────────────────────
 
@@ -234,15 +233,16 @@ local function renderPill(ws, monName)
     end
   end
 
-  -- Outer row groups label + icons with a subtle shared background
+  -- Outer row: pill shape with explicit height so it doesn't stretch to full bar height
   local pill = barWidget.isVertical() and ui.column or ui.row
   return pill({
-    fill     = active and (special and "secondary/0.15" or "primary/0.15") or "surface_variant/0.5",
-    radius   = PILL_RADIUS,
-    paddingH = 2,
-    paddingV = 2,
-    gap      = 2,
-    align    = "center",
+    fill      = active and (special and "secondary/0.2" or "primary/0.2") or "surface_variant/0.4",
+    radius    = 99,
+    paddingH  = 4,
+    paddingV  = 0,
+    height    = 24,
+    gap       = 2,
+    align     = "center",
   }, nodes)
 end
 
