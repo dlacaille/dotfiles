@@ -177,13 +177,18 @@ local function renderPill(ws, monName)
     end
   end
 
-  local container = barWidget.isVertical() and ui.column or ui.row
+  local pill = barWidget.isVertical() and ui.column or ui.row
   local clickName = clickNameFor(ws)
-  local boxProps = { fill = bg, radius = PILL_RADIUS, paddingH = PILL_PAD_H, paddingV = PILL_PAD_V }
-  if clickName then boxProps.onClick = clickName end
-  return ui.box(boxProps, {
-    container({ gap = 4, align = "center" }, children),
-  })
+  local pillProps = {
+    fill     = bg,
+    radius   = PILL_RADIUS,
+    paddingH = PILL_PAD_H,
+    paddingV = PILL_PAD_V,
+    gap      = 4,
+    align    = "center",
+  }
+  if clickName then pillProps.onClick = clickName end
+  return pill(pillProps, children)
 end
 
 local function render()
