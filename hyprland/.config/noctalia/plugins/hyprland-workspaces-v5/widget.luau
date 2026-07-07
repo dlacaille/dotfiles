@@ -58,8 +58,6 @@ end
 
 local ICON_SIZE   = 14
 local PILL_RADIUS = 6
-local PILL_PAD_H  = 6
-local PILL_PAD_V  = 2
 local GAP         = 4
 
 -- ── Workspace label click handlers (1-20 + special) ──────────────────────────
@@ -196,36 +194,37 @@ local function renderPill(ws, monName)
 
   local urgent = ws.hasUrgent or false
 
-  local bg, fg
+  -- Variant drives the pill color and hover state on the label button.
+  -- active+special -> secondary, active -> primary, urgent -> destructive, else ghost
+  local variant
   if urgent then
-    bg, fg = "tertiary",       "on_tertiary"
+    variant = "destructive"
   elseif active and special then
-    bg, fg = "secondary",      "on_secondary"
+    variant = "secondary"
   elseif active then
-    bg, fg = "primary",        "on_primary"
+    variant = "primary"
   else
-    bg, fg = "surface_variant","on_surface_variant"
+    variant = "ghost"
   end
 
-  -- Workspace label button
-  local labelVariant = active and "primary" or (urgent and "destructive" or "ghost")
-  local children = {
+  -- Label button: pill shape + hover state + workspace switch on click
+  local nodes = {
     ui.button({
       text     = wsLabel(ws),
-      variant  = labelVariant,
+      variant  = variant,
       selected = active,
       onClick  = wsClickName(ws),
     }),
   }
 
-  -- One icon button per client in this workspace
+  -- Icon images: one per client, each focuses that window on click
   local clients = clientsByWs[wsId] or {}
   for _, c in ipairs(clients) do
     local path = iconPath(c.class)
     if path and winSlotCounter < MAX_WIN_SLOTS then
       winSlotCounter = winSlotCounter + 1
       windowSlots[winSlotCounter] = c.address
-      table.insert(children, ui.image({
+      table.insert(nodes, ui.image({
         path    = path,
         width   = ICON_SIZE,
         height  = ICON_SIZE,
@@ -235,15 +234,16 @@ local function renderPill(ws, monName)
     end
   end
 
+  -- Outer row groups label + icons with a subtle shared background
   local pill = barWidget.isVertical() and ui.column or ui.row
   return pill({
-    fill     = bg,
+    fill     = active and (special and "secondary/0.15" or "primary/0.15") or "surface_variant/0.5",
     radius   = PILL_RADIUS,
-    paddingH = PILL_PAD_H,
-    paddingV = PILL_PAD_V,
+    paddingH = 2,
+    paddingV = 2,
     gap      = 2,
     align    = "center",
-  }, children)
+  }, nodes)
 end
 
 local function render()
