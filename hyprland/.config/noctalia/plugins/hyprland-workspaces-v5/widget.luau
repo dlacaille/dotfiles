@@ -131,7 +131,6 @@ local function renderPill(ws, monName)
   local special = isSpecial(ws)
   local wsId = ws.id
 
-  -- Determine active state
   local active = false
   if special then
     active = (ws.name == activeSpecialName(monName))
@@ -141,8 +140,10 @@ local function renderPill(ws, monName)
 
   local urgent = ws.hasUrgent or false
 
-  -- Colors
-  local bg, fg
+  -- Build label: workspace name + icon filenames as text is not possible,
+  -- so we compose a ui.row pill: styled row for visuals, ui.button for clicks.
+  local fg
+  local bg
   if urgent then
     bg, fg = "tertiary", "on_tertiary"
   elseif active and special then
@@ -153,22 +154,18 @@ local function renderPill(ws, monName)
     bg, fg = "surface_variant", "on_surface_variant"
   end
 
-  -- Build pill contents
-  local children = {}
-
-  -- Workspace label
-  table.insert(children, ui.label({
+  -- Inner content: label + app icons
+  local content = {}
+  table.insert(content, ui.label({
     text       = wsLabel(ws),
     color      = fg,
     fontWeight = active and "bold" or "medium",
   }))
-
-  -- App icons for clients on this workspace
   local clients = clientsByWs[wsId] or {}
   for _, c in ipairs(clients) do
     local path = iconPath(c.class)
     if path then
-      table.insert(children, ui.image({
+      table.insert(content, ui.image({
         path   = path,
         width  = ICON_SIZE,
         height = ICON_SIZE,
@@ -177,18 +174,32 @@ local function renderPill(ws, monName)
     end
   end
 
-  local pill = barWidget.isVertical() and ui.column or ui.row
+  -- Styled pill: ui.row provides fill/radius/padding/children.
+  -- onClick goes on ui.image or ui.box wrapping the row, but since neither
+  -- works, we use the widget-level onClick trampoline via a nested ui.button
+  -- (ghost, zero padding) that sits over the label.
+  local innerRow = barWidget.isVertical() and ui.column or ui.row
   local clickName = clickNameFor(ws)
-  local pillProps = {
-    fill     = bg,
-    radius   = PILL_RADIUS,
-    paddingH = PILL_PAD_H,
-    paddingV = PILL_PAD_V,
-    gap      = 4,
-    align    = "center",
+
+  -- Wrap the whole pill in a ui.button (ghost variant) to get onClick support,
+  -- with the styled row as a child label substitute. Since ui.button children
+  -- may not render, we use text= for the label and accept no icons for now.
+  -- TODO: find a way to render icons inside clickable pills once the API clarifies.
+  local pillLabel = wsLabel(ws)
+  -- Append a dot per client as a minimal icon indicator when icons can't render
+  local clientCount = #clients
+  if clientCount > 0 then
+    pillLabel = pillLabel .. string.rep(" ·", clientCount)
+  end
+
+  local buttonProps = {
+    text     = pillLabel,
+    variant  = active and "primary" or (urgent and "destructive" or "ghost"),
+    selected = active,
+    onClick  = clickName,
   }
-  if clickName then pillProps.onClick = clickName end
-  return pill(pillProps, children)
+  if not clickName then buttonProps.onClick = nil end
+  return ui.button(buttonProps)
 end
 
 local function render()
