@@ -12,14 +12,6 @@ hl.monitor({
 	scale = 1,
 	bitdepth = 10,
 })
--- External displays
-hl.monitor({
-	output = "",
-	mode = "preferred",
-	position = "auto",
-	mirror = "eDP-1",
-	scale = 1,
-})
 -- LG Ultrawide
 hl.monitor({
 	output = "desc:LG Electronics LG ULTRAWIDE 0x00028060",
@@ -43,6 +35,14 @@ hl.monitor({
 	position = "-1920x-600",
 	scale = 1,
 	bitdepth = 10,
+})
+-- External displays
+hl.monitor({
+	output = "",
+	mode = "preferred",
+	position = "auto",
+	mirror = "eDP-1",
+	scale = 1,
 })
 
 ---------------------
@@ -314,26 +314,6 @@ hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "down" }))
 hl.bind(mainMod .. " + SHIFT + comma", hl.dsp.window.move({ workspace = "e-1" }))
 hl.bind(mainMod .. " + SHIFT + period", hl.dsp.window.move({ workspace = "e+1" }))
 
--- Teams call shortcuts: pass mouse buttons through, send ctrl+shift+m/o if Teams is active
-hl.bind("mouse:275", function()
-	local w = hl.get_active_window()
-	if w ~= nil and w.class == "teams-for-linux" then
-		hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "m", state = "down" }))
-		hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "m", state = "up" }))
-	else
-		hl.dispatch(hl.dsp.pass({ window = "activewindow" }))
-	end
-end)
-hl.bind("mouse:276", function()
-	local w = hl.get_active_window()
-	if w ~= nil and w.class == "teams-for-linux" then
-		hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "o", state = "down" }))
-		hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "o", state = "up" }))
-	else
-		hl.dispatch(hl.dsp.pass({ window = "activewindow" }))
-	end
-end)
-
 -- Switch workspaces
 for i = 1, 9 do
 	hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = i, on_current_monitor = true }))
@@ -357,6 +337,8 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ direction = "right" }))
 
 -- Move/resize with mouse
+-- hl.bind("mouse:275", hl.dsp.window.drag(), { mouse = true, drag = true })
+-- hl.bind("mouse:276", hl.dsp.window.resize(), { mouse = true, drag = true })
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
@@ -432,20 +414,6 @@ hl.window_rule({
 	match = { class = "hyprland-run" },
 	move = "20 monitor_h-120",
 	float = true,
-})
-
--- Blur vicinae windows
-hl.layer_rule({
-	name = "vicinae-blur",
-	match = { namespace = "vicinae" },
-	blur = true,
-	ignore_alpha = 0,
-})
-
-hl.layer_rule({
-	name = "vicinae-no-animation",
-	match = { namespace = "vicinae" },
-	no_anim = true,
 })
 
 -- Blur noctalia
