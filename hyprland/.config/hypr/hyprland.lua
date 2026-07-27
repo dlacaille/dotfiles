@@ -11,6 +11,7 @@ hl.monitor({
 	position = "0x0",
 	scale = 1,
 	bitdepth = 10,
+	supports_hdr = 1,
 })
 -- LG Ultrawide
 hl.monitor({
@@ -19,6 +20,7 @@ hl.monitor({
 	position = "-3440x-600",
 	scale = 1,
 	bitdepth = 10,
+	supports_hdr = 1,
 })
 -- Dell Monitor L
 hl.monitor({
@@ -54,24 +56,24 @@ local flatpakSuffix = "--enable-features=UseOzonePlatform --ozone-platform=wayla
 local browser = "zen"
 local term = "~/.config/hypr/scripts/ghostty_cwd.sh"
 local fileManager = "dolphin"
-local launcher = "qs -c noctalia-shell ipc call launcher toggle"
+local ipc = "noctalia msg "
+local launcher = ipc .. "panel-toggle launcher"
 local music = flatpakPrefix .. " com.spotify.Client " .. flatpakSuffix
 local phone = flatpakPrefix .. " org.ferdium.Ferdium " .. flatpakSuffix
 local chat = "teams-for-linux"
 local onePasswordQA = "1password --quick-access"
 local notes = "~/Applications/Obsidian.AppImage"
 local swaync = "swaync-client -t -sw"
-local lock = "playerctl pause; qs -c noctalia-shell ipc call lockScreen lock"
+local lock = "playerctl pause; " .. ipc .. "session lock"
 local showDesktop = "~/.config/hypr/scripts/toggle_show_desktop.sh"
-local randWall = "qs -c noctalia-shell ipc call wallpaper random"
+local randWall = ipc .. "wallpaper-random"
 
 -------------------
 ---- AUTOSTART ----
 -------------------
 
 hl.on("hyprland.start", function()
-	hl.exec_cmd("qs -c noctalia-shell")
-	hl.exec_cmd("~/.config/hypr/scripts/random_wallpaper.sh")
+	hl.exec_cmd("noctalia")
 	hl.exec_cmd("/usr/bin/1password --silent")
 	hl.exec_cmd("/usr/libexec/pam_kwallet_init")
 	hl.exec_cmd("fcitx5")
@@ -138,6 +140,10 @@ hl.config({
 
 	animations = {
 		enabled = true,
+	},
+
+	quirks = {
+		prefer_hdr = 1,
 	},
 })
 
@@ -416,11 +422,17 @@ hl.window_rule({
 	float = true,
 })
 
--- Blur noctalia
+-- Noctalia
 hl.layer_rule({
-	name = "noctalia-blur",
-	match = { namespace = "noctalia-background-.*$" },
+	name = "noctalia",
+	match = {
+		namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd)$",
+	},
+	no_anim = true,
+	ignore_alpha = 0.5,
 	blur = true,
 	blur_popups = true,
-	ignore_alpha = 0.5,
 })
+
+-- For Noctalia Color templates
+require("noctalia").apply_theme()
