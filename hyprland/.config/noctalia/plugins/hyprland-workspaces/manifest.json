@@ -1,0 +1,18 @@
+{
+  "id": "hyprland-workspaces",
+  "name": "Hyprland Workspaces",
+  "version": "1.0.0",
+  "minNoctaliaVersion": "3.6.0",
+  "author": "dlacaille",
+  "license": "MIT",
+  "description": "Shows workspaces from all monitors with app icons, including special workspaces.",
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "dependencies": {
+    "plugins": []
+  },
+  "metadata": {
+    "defaultSettings": {}
+  }
+}

@@ -26,6 +26,9 @@ source $ZSH/oh-my-zsh.sh
 alias v='nvim'
 alias o='opencode'
 
+function zv() { z "$1"; nvim }
+function zo() { z "$1"; opencode }
+
 export NODE_OPTIONS="--max-old-space-size=4096"
 export EDITOR="nvim"
 
@@ -38,3 +41,15 @@ if [ ! -f ~/.zshrc.local ]; then
   echo '# export PATH="$HOME/.example/bin:$PATH"' >> ~/.zshrc.local
 fi
 source ~/.zshrc.local
+
+# pnpm
+export PNPM_HOME="/home/dlacaille/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"

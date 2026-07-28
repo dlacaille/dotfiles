@@ -17,10 +17,6 @@ return {
     },
     config = {
       omnisharp = {
-        cmd = {
-          "dotnet",
-          vim.fn.expand "~/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll",
-        },
         settings = {
           RoslynExtensionsOptions = {
             enableImportCompletion = true,
