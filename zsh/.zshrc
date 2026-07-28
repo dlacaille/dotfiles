@@ -25,6 +25,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias v='nvim'
 alias o='opencode'
+alias lg='lazygit'
 
 function zv() { z "$1"; nvim }
 function zo() { z "$1"; opencode }
