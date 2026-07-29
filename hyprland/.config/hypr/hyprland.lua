@@ -78,6 +78,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("/usr/libexec/pam_kwallet_init")
 	hl.exec_cmd("fcitx5")
 	hl.exec_cmd("~/.config/hypr/scripts/easyeffects.sh")
+	hl.exec_cmd("/usr/libexec/xdg-desktop-portal -r")
 end)
 
 hl.exec_cmd([[gsettings set org.gnome.desktop.interface gtk-theme "Breeze-Dark"]])
