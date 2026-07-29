@@ -7,7 +7,6 @@ return {
     },
     formatting = {
       timeout_ms = 5000,
-      disabled = {},
     },
     config = {
       omnisharp = {
