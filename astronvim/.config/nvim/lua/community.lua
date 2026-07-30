@@ -25,6 +25,7 @@ return {
   { import = "astrocommunity.editing-support.rainbow-delimiters-nvim" },
   { import = "astrocommunity.editing-support.conform-nvim" },
   { import = "astrocommunity.editing-support.vim-move" },
+  { import = "astrocommunity.editing-support.quick-scope" },
   -- Search
   { import = "astrocommunity.search.nvim-spectre" },
   { import = "astrocommunity.fuzzy-finder.snacks-picker" },
