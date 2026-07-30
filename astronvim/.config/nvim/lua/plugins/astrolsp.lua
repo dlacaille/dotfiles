@@ -7,13 +7,6 @@ return {
     },
     formatting = {
       timeout_ms = 5000,
-      disabled = {
-        "tsserver",
-        "vtsls",
-      },
-    },
-    autocmds = {
-      eslint_fix_on_save = false,
     },
     config = {
       omnisharp = {
@@ -25,14 +18,19 @@ return {
       },
       eslint = {
         flags = {
-          allow_incremental_sync = false,
-          debounce_text_changes = 1500,
+          debounce_text_changes = 300,
         },
         settings = {
-          rulesCustomizations = {
-            -- Disable some very slow rules
-            { rule = "deprecation/deprecation", severity = "off" },
-            { rule = "import/no-cycle", severity = "off" },
+          options = {
+            overrideConfig = {
+              rules = {
+                ["@tanstack/query/no-rest-destructuring"] = "off",
+                ["@typescript-eslint/no-deprecated"] = "off",
+                ["import/no-cycle"] = "off",
+                ["prettier/prettier"] = "off",
+                ["deprecation/deprecation"] = "off",
+              },
+            },
           },
         },
       },
