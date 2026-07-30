@@ -13,6 +13,7 @@ return {
   { import = "astrocommunity.pack.html-css" },
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.pack.mdx" },
+  { import = "astrocommunity.pack.php" },
   { import = "astrocommunity.pack.prisma" },
   { import = "astrocommunity.pack.tailwindcss" },
   { import = "astrocommunity.pack.typescript" },

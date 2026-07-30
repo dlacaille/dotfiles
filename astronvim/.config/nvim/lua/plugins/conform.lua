@@ -21,6 +21,7 @@ return {
       jsonc = js_formatters,
       yaml = js_formatters,
       markdown = js_formatters,
+      php = { "phpcsfixer" },
       ["markdown.mdx"] = js_formatters,
       graphql = js_formatters,
       handlebars = js_formatters,
