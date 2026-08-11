@@ -6,3 +6,4 @@ font-family = Lilex
 font-feature = zero, cv03, ss01, cv08, cv11, cv15
 confirm-close-surface = false
 config-file = ?config.ghostty.local
+window-decoration = false
