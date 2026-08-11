@@ -27,7 +27,7 @@ return {
       },
       format_on_save = false,
       format_after_save = {
-        lsp_format = "last",
+        lsp_format = "first",
       },
     },
   },
