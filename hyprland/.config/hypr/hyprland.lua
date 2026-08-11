@@ -51,22 +51,31 @@ hl.monitor({
 ---- MY PROGRAMS ----
 ---------------------
 
-local flatpakPrefix = "/usr/bin/flatpak --socket=wayland run"
-local flatpakSuffix = "--enable-features=UseOzonePlatform --ozone-platform=wayland"
-local browser = "zen"
+local p = {
+	ipc = function(app)
+		return "noctalia msg " .. app
+	end,
+	flatpak = function(app)
+		return "/usr/bin/flatpak --socket=wayland run "
+			.. app
+			.. " --enable-features=UseOzonePlatform --ozone-platform=wayland"
+	end,
+}
+
+local browser = "/usr/bin/zen-browser"
 local term = "~/.config/hypr/scripts/ghostty_cwd.sh"
-local fileManager = "dolphin"
-local ipc = "noctalia msg "
-local launcher = ipc .. "panel-toggle launcher"
-local music = flatpakPrefix .. " com.spotify.Client " .. flatpakSuffix
-local phone = flatpakPrefix .. " org.ferdium.Ferdium " .. flatpakSuffix
-local chat = "teams-for-linux"
+local fileManager = "thunar"
+local launcher = p.ipc("panel-toggle launcher")
+local music = p.flatpak("com.spotify.Client")
+local phone = p.flatpak("org.ferdium.Ferdium")
+local chat = p.flatpak("com.github.IsmaelMartinez.teams_for_linux")
 local onePasswordQA = "1password --quick-access"
 local notes = "~/Applications/Obsidian.AppImage"
-local swaync = "swaync-client -t -sw"
-local lock = "playerctl pause; " .. ipc .. "session lock"
+local lock = "playerctl pause; " .. p.ipc("session lock")
 local showDesktop = "~/.config/hypr/scripts/toggle_show_desktop.sh"
-local randWall = ipc .. "wallpaper-random"
+local randWall = p.ipc("wallpaper-random")
+local screenshotFull = "noctalia msg screenshot-fullscreen pick"
+local screenshotRegion = "noctalia msg screenshot-region"
 
 -------------------
 ---- AUTOSTART ----
@@ -81,9 +90,6 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("/usr/libexec/xdg-desktop-portal -r")
 end)
 
-hl.exec_cmd([[gsettings set org.gnome.desktop.interface gtk-theme "Breeze-Dark"]])
-hl.exec_cmd([[gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"]])
-
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
@@ -92,7 +98,6 @@ hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("XCURSOR_SIZE", "24")
 hl.env("ELECTRON_OZONE_PLATFORM", "wayland")
 hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("HYPRSHOT_DIR", "Pictures/Screenshots")
 
 -----------------------
 ---- LOOK AND FEEL ----
@@ -287,7 +292,6 @@ hl.bind(execMod .. " + Q", hl.dsp.exit())
 hl.bind("CTRL + SHIFT + space", hl.dsp.exec_cmd(onePasswordQA))
 hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd(lock))
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(launcher))
-hl.bind(mainMod .. " + semicolon", hl.dsp.exec_cmd(swaync))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(showDesktop))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + X", hl.dsp.window.fullscreen())
@@ -297,9 +301,8 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"))
 
 -- Screenshots
-hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window"))
-hl.bind(mainMod .. " + PRINT", hl.dsp.exec_cmd("hyprshot -m output"))
-hl.bind("PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
+hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd(screenshotFull))
+hl.bind("PRINT", hl.dsp.exec_cmd(screenshotRegion))
 
 -- Move focus
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
@@ -434,6 +437,3 @@ hl.layer_rule({
 	blur = true,
 	blur_popups = true,
 })
-
--- For Noctalia Color templates
-require("noctalia").apply_theme()
